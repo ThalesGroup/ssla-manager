@@ -1,44 +1,113 @@
-# Thales Open Source Template Project
+# SSLA Manager
 
-Template for creating a new project in the [Thales GitHub organization](https://github.com/ThalesGroup).
+Python module to parse and manage Security Service Level Agreement (SSLA) files with a REST API and SQL.
 
-Each Thales OSS project repository **MUST** contain the following files at the root:
+## Usage
 
-- a `LICENSE` which has been chosen in accordance with legal department depending on your needs
+Examples :
 
-- a `README.md` outlining the project goals, sponsoring sig, and community contact information, [GitHub tips about README.md](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/about-readmes)
+```python
+from pathlib import Path
+from typing import List
 
-- a `CONTRIBUTING.md` outlining how to contribute to the project, how to submit a pull request and an issue
+from sslamanager.api import SecurityPolicyManager
+from sslamanager.parser.build.specs.security_metric import MetricType
+from sslamanager.parser.build.specs.slo import Slotype
+from sslamanager.parser.ssla_parser import SSLA, Metric
 
-- a `SECURITY.md` outlining how the security concerns are handled, [GitHub tips about SECURITY.md](https://docs.github.com/en/github/managing-security-vulnerabilities/adding-a-security-policy-to-your-repository)
+if __name__ == "__main__":
+    # init the manager with your database
+    manager = SecurityPolicyManager(Path("/tmp/ssla.db"))
 
-Below is an example of the common structure and information expected in a README.
+    # SSLA creation
+    # the SSLA is uploaded to your database
+    # the SSLA service is used as the id of your SSLA
+    ssla_content: bytes = Path("/tmp/ssla.xml").read_bytes()
+    ssla_model: SSLA = manager.create_ssla(ssla_content)
+    
+    # SSLA service listing
+    # retrieve all the service names related to the submitted SSLA in your database
+    services: List[str] = manager.get_services()
+    print(services)
 
-**Please keep this structure as is and only fill the content for each section according to your project.**
+    # SSLA parsing model
+    # manipulate the model to retrieve information
+    metrics: List[MetricType] = ssla_model.get_metrics("my_ssla_service_name")
+    SLOs: List[Slotype] = ssla_model.get_slos()
 
-If you need assistance or have question, please contact oss@thalesgroup.com
+    # more formats useful to parse using pydantic models
+    metrics_jsonable: List[Metric] = ssla_model.get_metrics_json("my_ssla_service_name")
+    print(metrics_jsonable.model_dump_json())
+    
+    # SSLA update
+    new_ssla_content: bytes = Path("/tmp/ssla_v2.xml").read_bytes()
+    new_ssla_model: SSLA = manager.update_ssla(new_ssla_content)
 
-## Get started
+    # SSLA retrieve content
+    ssla_content = manager.get_ssla_content("my_ssla_service_name")
 
-XXX project purpose it to ...
+    # SSLA deletion in database
+    manager.delete_ssla("my_ssla_service_name")
+```
 
-**Please also add the description into the About section (Description field)**
+## Build
 
-## Documentation
+You need [Poetry](https://python-poetry.org/) to build this module.
 
-Documentation is available at [xxx/docs](https://xxx/docs/).
+First, update this module's version in `./poetry.toml`.
 
-You can use [GitHub pages](https://guides.github.com/features/pages/) to create your documentation.
+Then build it
 
-See an example here : https://github.com/ThalesGroup/ThalesGroup.github.io
+```sh
+./build.sh
+```
 
-**Please also add the documentation URL into the About section (Website field)**
+## Test
 
-## Contributing
+**You need to build the project first to generate the class models**
 
-If you are interested in contributing to the XXX project, start by reading the [Contributing guide](/CONTRIBUTING.md).
+```sh
+# run tests
+poetry run coverage run -m pytest
+# get the report
+poetry run coverage report
+```
 
-## License
+## Coverage
 
-The chosen license in accordance with legal department must be defined into an explicit [LICENSE](https://github.com/ThalesGroup/template-project/blob/master/LICENSE) file at the root of the repository
-You can also link this file in this README section.
+```
+Name                                                              Stmts   Miss  Cover
+-------------------------------------------------------------------------------------
+sslamanager/__init__.py                                               0      0   100%
+sslamanager/database/__init__.py                                      0      0   100%
+sslamanager/database/ssla_table.py                                   53      1    98%
+sslamanager/exceptions.py                                            22      0   100%
+sslamanager/parser/__init__.py                                        0      0   100%
+sslamanager/parser/build/__init__.py                                  5      0   100%
+sslamanager/parser/build/bf_2.py                                     30      0   100%
+sslamanager/parser/build/pkg_2001/__init__.py                         2      0   100%
+sslamanager/parser/build/pkg_2001/xmlschema.py                      694      0   100%
+sslamanager/parser/build/pkg_2005/__init__.py                         0      0   100%
+sslamanager/parser/build/pkg_2005/pkg_08/__init__.py                  0      0   100%
+sslamanager/parser/build/pkg_2005/pkg_08/addressing/__init__.py       2      0   100%
+sslamanager/parser/build/pkg_2005/pkg_08/addressing/ws_addr.py      111      0   100%
+sslamanager/parser/build/sla.py                                      21      0   100%
+sslamanager/parser/build/specs/__init__.py                            5      0   100%
+sslamanager/parser/build/specs/capability.py                         20      0   100%
+sslamanager/parser/build/specs/controls/__init__.py                   3      0   100%
+sslamanager/parser/build/specs/controls/ccm.py                       17      0   100%
+sslamanager/parser/build/specs/controls/nist.py                      19      0   100%
+sslamanager/parser/build/specs/sdt.py                                36      0   100%
+sslamanager/parser/build/specs/security_metric.py                   127      0   100%
+sslamanager/parser/build/specs/slo.py                                40      0   100%
+sslamanager/parser/build/wsag.py                                    211      0   100%
+sslamanager/parser/build/xml.py                                       4      0   100%
+sslamanager/parser/ssla_parser.py                                   206     14    93%
+sslamanager/test/__init__.py                                          0      0   100%
+sslamanager/test/database/__init__.py                                 0      0   100%
+sslamanager/test/database/ssla_table_test.py                         79      1    99%
+sslamanager/test/parser/__init__.py                                   0      0   100%
+sslamanager/test/parser/ssla_parser_test.py                         163      0   100%
+-------------------------------------------------------------------------------------
+TOTAL                                                              1870     16    99%
+```

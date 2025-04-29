@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:import namespace="http://www.specs-project.eu/resources/schemas/xml/SLAtemplate" schemaLocation="sla.xsd" />
+    <xs:import namespace="http://schemas.ggf.org/graap/2007/03/ws-agreement" schemaLocation="wsag.xsd"/>
+</xs:schema>

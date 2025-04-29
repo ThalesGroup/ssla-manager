@@ -1,0 +1,21 @@
+<!DOCTYPE catalog
+ PUBLIC "-//OASIS//DTD Entity Resolution XML Catalog V1.0//EN"
+ "http://www.oasis-open.org/committees/entity/release/1.0/catalog.dtd">
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="public">
+
+ <system systemId="http://www.w3.org/XML/1998/namespace" uri="/path/to/res/templates/ssla/xml.xsd" />
+ <system systemId="http://www.w3.org/2001/XMLSchema" uri="/path/to/res/templates/ssla/XMLSchema.xsd" />
+
+<!-- <system systemId="ssla_schema.xsd" uri="/path/to/res/templates/ssla/ssla_schema.xsd" />-->
+ <system systemId="ccm.xsd" uri="/path/to/res/templates/ssla/specs/controls/ccm.xsd" />
+ <system systemId="nist.xsd" uri="/path/to/res/templates/ssla/specs/controls/nist.xsd" />
+
+ <system systemId="sdt.xsd" uri="/path/to/res/templates/ssla/specs/sdt.xsd" />
+ <system systemId="slo.xsd" uri="/path/to/res/templates/ssla/specs/slo.xsd" />
+ <system systemId="capability.xsd" uri="/path/to/res/templates/ssla/specs/capability.xsd" />
+ <system systemId="security_metric.xsd" uri="/path/to/res/templates/specs/security_metric.xsd" />
+
+ <system systemId="sla.xsd" uri="/path/to/res/templates/ssla/sla.xsd" />
+ <system systemId="wsag.xsd" uri="/path/to/res/templates/ssla/wsag.xsd" />
+
+</catalog>

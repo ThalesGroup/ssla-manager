@@ -1,0 +1,31 @@
+[project]
+name = "sslamanager"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "Louis Cailliot",email = "louis.cailliot@thalesgroup.com"}
+]
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "pydantic (>=2.10.6,<3.0.0)",
+    "pyyaml (>=6.0.2,<7.0.0)",
+    "lxml (>=5.3.1,<6.0.0)",
+    "sqlalchemy (>=2.0.39,<3.0.0)",
+    "xsdata (>=24.12,<25.0)"
+]
+
+[tool.poetry]
+include = [
+    { path = "sslamanager/parser/templates", format = ["wheel"] }
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.5"
+coverage = "^7.7.0"
+
