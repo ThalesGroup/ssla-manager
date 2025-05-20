@@ -1,6 +1,6 @@
 # SSLA Manager
 
-Python module to parse and manage Security Service Level Agreement (SSLA) files with a REST API and SQL.
+Python module to parse and manage Security Service Level Agreement (SSLA) isntances with SQL.
 
 ## Usage
 
