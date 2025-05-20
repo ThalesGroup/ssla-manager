@@ -61,6 +61,14 @@ def services_test(ssla: "SSLA"):
     assert service is not None
     assert service.service_name == SERVICE_NAME
 
+    # test services names
+    services_names = ssla.get_services_names()
+    assert len(services_names) == 1
+    assert services_names[0] == SERVICE_NAME
+
+    first_service_name = ssla.get_first_service_name()
+    assert first_service_name == SERVICE_NAME
+
 
 def capabilities_test(ssla: "SSLA"):
     capabilities: List["CapabilityType"] = ssla.get_capabilities(SERVICE_NAME)

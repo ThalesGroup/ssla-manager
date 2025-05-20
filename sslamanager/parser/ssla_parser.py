@@ -241,6 +241,9 @@ class SSLA:
     def get_services(self) -> List["ServiceDescriptionTermType"]:
         return self.ssla.terms.all.service_description_term
 
+    def get_services_names(self) -> List[str]:
+        return [service.service_name for service in self.get_services()]
+
     def get_service(self, service_name: str) -> "ServiceDescriptionTermType":
         service_descriptions = [desc for desc in self.ssla.terms.all.service_description_term
                                 if desc.service_name == service_name]
@@ -248,6 +251,9 @@ class SSLA:
 
     def get_first_service(self) -> "ServiceDescriptionTermType":
         return self.get_services()[0]
+
+    def get_first_service_name(self) -> str:
+        return self.get_services_names()[0]
 
     def get_capabilities(self, service_name: str) -> Optional[list["CapabilityType"]]:
         service = self.get_service(service_name)

@@ -102,12 +102,12 @@ sslamanager/parser/build/specs/security_metric.py                   127      0  
 sslamanager/parser/build/specs/slo.py                                40      0   100%
 sslamanager/parser/build/wsag.py                                    211      0   100%
 sslamanager/parser/build/xml.py                                       4      0   100%
-sslamanager/parser/ssla_parser.py                                   206     14    93%
+sslamanager/parser/ssla_parser.py                                   210     14    93%
 sslamanager/test/__init__.py                                          0      0   100%
 sslamanager/test/database/__init__.py                                 0      0   100%
-sslamanager/test/database/ssla_table_test.py                         79      1    99%
+sslamanager/test/database/ssla_table_test.py                         79      0   100%
 sslamanager/test/parser/__init__.py                                   0      0   100%
-sslamanager/test/parser/ssla_parser_test.py                         163      0   100%
+sslamanager/test/parser/ssla_parser_test.py                         168      0   100%
 -------------------------------------------------------------------------------------
-TOTAL                                                              1870     16    99%
+TOTAL                                                              1879     15    99%
 ```
