@@ -326,6 +326,29 @@ class SSLA:
         return [ServicePropertiesParser.to_json_model(p) for p in ssla_service_properties]
 
 
+SCHEMA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "templates", "ssla")
+
+
+class EmbeddedSchemaResolver(etree.Resolver):
+    """
+    Resolves the remote schemaLocation URLs referenced by the third-party XSDs
+    (wsag.xsd, bf-2.xsd, XMLSchema.xsd) to the copies embedded in templates/ssla,
+    so that schema compilation never requires network access.
+    """
+
+    URL_MAP = {
+        "http://www.w3.org/2005/08/addressing/ws-addr.xsd": "ws-addr.xsd",
+        "http://www.w3.org/2001/xml.xsd": "xml.xsd",
+        "http://www.w3.org/2001/XMLSchema.xsd": "XMLSchema.xsd",
+    }
+
+    def resolve(self, system_url, public_id, context):
+        local_file = self.URL_MAP.get(system_url)
+        if local_file is not None:
+            return self.resolve_filename(os.path.join(SCHEMA_DIR, local_file), context)
+        return None
+
+
 class SSLAParser(object):
     """
     Parser to generate and validate the SSLA object model from various inputs
@@ -334,13 +357,17 @@ class SSLAParser(object):
     def __init__(self):
         self.self_path = Path.cwd()
         self.parser = XmlParser(context=XmlContext())
-        self.schema_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "templates/ssla/ssla_schema.xsd")
+        self.schema_path = os.path.join(SCHEMA_DIR, "ssla_schema.xsd")
 
     def validate_schema_from_content(self, ssla_content: bytes) -> bool:
         """
         Returns True if the given XML file is validated by the SSLA XML Schema
         """
-        template = etree.parse(self.schema_path)
+        # no_network guarantees airgapped operation: any schemaLocation missing
+        # from the resolver map fails loudly instead of silently going online
+        xsd_parser = etree.XMLParser(no_network=True)
+        xsd_parser.resolvers.add(EmbeddedSchemaResolver())
+        template = etree.parse(self.schema_path, xsd_parser)
         schema = etree.XMLSchema(template)
         ssla = etree.XML(ssla_content)
         result = schema.validate(ssla)

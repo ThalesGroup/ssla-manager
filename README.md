@@ -66,9 +66,9 @@ Then build it
 
 ```sh
 # run tests
-poetry run coverage run -m pytest
+uv run coverage run -m pytest
 # get the report
-poetry run coverage report
+uv run coverage report
 ```
 
 ## Coverage
@@ -79,7 +79,7 @@ Name                                                              Stmts   Miss  
 sslamanager/__init__.py                                               0      0   100%
 sslamanager/database/__init__.py                                      0      0   100%
 sslamanager/database/ssla_table.py                                   53      1    98%
-sslamanager/exceptions.py                                            22      0   100%
+sslamanager/exceptions.py                                            23      0   100%
 sslamanager/parser/__init__.py                                        0      0   100%
 sslamanager/parser/build/__init__.py                                  5      0   100%
 sslamanager/parser/build/bf_2.py                                     30      0   100%
@@ -100,12 +100,12 @@ sslamanager/parser/build/specs/security_metric.py                   127      0  
 sslamanager/parser/build/specs/slo.py                                40      0   100%
 sslamanager/parser/build/wsag.py                                    211      0   100%
 sslamanager/parser/build/xml.py                                       4      0   100%
-sslamanager/parser/ssla_parser.py                                   210     14    93%
+sslamanager/parser/ssla_parser.py                                   220     14    94%
 sslamanager/test/__init__.py                                          0      0   100%
 sslamanager/test/database/__init__.py                                 0      0   100%
 sslamanager/test/database/ssla_table_test.py                         79      0   100%
 sslamanager/test/parser/__init__.py                                   0      0   100%
 sslamanager/test/parser/ssla_parser_test.py                         168      0   100%
 -------------------------------------------------------------------------------------
-TOTAL                                                              1879     15    99%
+TOTAL                                                              1890     15    99%
 ```
