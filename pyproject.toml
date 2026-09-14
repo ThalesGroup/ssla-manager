@@ -1,31 +1,33 @@
 [project]
 name = "sslamanager"
-version = "0.1.1"
+version = "0.1.2"
 description = ""
 authors = [
     {name = "Louis Cailliot",email = "louis.cailliot@thalesgroup.com"}
 ]
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 dependencies = [
-    "pydantic (>=2.10.6,<3.0.0)",
-    "pyyaml (>=6.0.2,<7.0.0)",
-    "lxml (>=6.1.0,<7.0.0)",
-    "sqlalchemy (>=2.0.39,<3.0.0)",
-    "xsdata (>=24.12,<25.0)"
+    "pydantic>=2.10.6,<3.0.0",
+    "pyyaml>=6.0.2,<7.0.0",
+    "lxml>=6.1.0,<7.0.0",
+    "sqlalchemy>=2.0.39,<3.0.0",
+    "xsdata>=24.12,<25.0",
 ]
 
-[tool.poetry]
-include = [
-    { path = "sslamanager/parser/templates", format = ["wheel"] }
+[dependency-groups]
+dev = [
+    "pytest>=8.3.5,<9.0.0",
+    "coverage>=7.7.0,<8.0.0",
+    "xsdata[cli]"
 ]
-
 
 [build-system]
-requires = ["poetry-core>=2.0.0,<3.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["uv_build>=0.8.0,<0.12.0"]
+build-backend = "uv_build"
 
-[tool.poetry.group.dev.dependencies]
-pytest = "^8.3.5"
-coverage = "^7.7.0"
-
+[tool.uv.build-backend]
+# Flat layout: the package lives at ./sslamanager, not ./src/sslamanager.
+# All files inside the module directory (including parser/templates) are packaged.
+module-name = "sslamanager"
+module-root = ""

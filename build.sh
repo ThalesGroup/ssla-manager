@@ -25,11 +25,8 @@ function check_requirement(){
 function init_build(){
     cd "${PROJECT_DIR}" || exit
     echo ". Build environment :"
-    poetry env info
-    poetry check
-    echo ". Install dependencies"
-    poetry run python -m pip install --upgrade pip
-    poetry update
+    uv run python --version
+    uv pip check
 }
 
 function xsdata_generation(){
@@ -37,15 +34,15 @@ function xsdata_generation(){
     cd "${PROJECT_DIR}" || exit
     rm -rf "${SSLA_MODELS_DESTINATION:?}"
     # mandatory to have xsdata[cli] installed
-    poetry run python -m pip install --upgrade xsdata[cli]
-    poetry run python -m xsdata "${SSLA_XSD_FILE}" --package "${SSLA_MODELS_PACKAGE}"
+    uv pip install --upgrade xsdata[cli]
+    uv run python -m xsdata generate "${SSLA_XSD_FILE}" --package "${SSLA_MODELS_PACKAGE}"
 }
 
 function build(){
     echo ". Build module"
     cd "${PROJECT_DIR}" || exit
     rm -rf "${PROJECT_DIR}/dist"
-    poetry build
+    uv build
 
     echo ". Built in dist/:"
     ls "./dist/"
@@ -55,7 +52,7 @@ function build(){
 # MAIN
 #
 
-check_requirement poetry --version "! Install poetry first"
+check_requirement uv --version "! Install poetry first"
 
 init_build
 xsdata_generation

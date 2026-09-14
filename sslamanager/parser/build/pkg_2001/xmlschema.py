@@ -405,6 +405,9 @@ class Selector(Annotated):
 @dataclass
 class SimpleTypeAbstract(Annotated):
     """
+
+    "
+
     :ivar restriction:
     :ivar list_value:
     :ivar union:
@@ -534,6 +537,9 @@ class Keybase(Annotated):
 @dataclass
 class LocalSimpleType(SimpleTypeAbstract):
     """
+
+    "
+
     :ivar any_element:
     :ivar name: Forbidden when nested
     :ivar final:
@@ -638,6 +644,9 @@ class NumFacet(Facet):
 @dataclass
 class TopLevelSimpleType(SimpleTypeAbstract):
     """
+
+    "
+
     :ivar any_element:
     :ivar name: Required at the top level
     """
@@ -1174,6 +1183,9 @@ class AttributeGroup(NamedAttributeGroup):
 @dataclass
 class ComplexTypeAbstract(Annotated):
     """
+
+    "
+
     :ivar simple_content:
     :ivar complex_content:
     :ivar group:
@@ -2719,6 +2731,9 @@ class SimpleRestrictionType(RestrictionType):
 @dataclass
 class ComplexContent(Annotated):
     """
+
+    "
+
     :ivar restriction:
     :ivar extension:
     :ivar mixed: Overrides any setting on complexType parent.

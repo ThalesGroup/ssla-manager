@@ -52,9 +52,7 @@ if __name__ == "__main__":
 
 ## Build
 
-You need [Poetry](https://python-poetry.org/) to build this module.
-
-First, update this module's version in `./poetry.toml`.
+You need [Uv](https://docs.astral.sh/uv/) to build this module.
 
 Then build it
 
