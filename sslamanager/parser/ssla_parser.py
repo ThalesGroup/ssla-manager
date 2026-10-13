@@ -10,14 +10,15 @@ from xsdata.exceptions import ParserError
 from xsdata.formats.dataclass.context import XmlContext
 from xsdata.formats.dataclass.parsers import XmlParser
 
-from sslamanager.exceptions import SSLASLOException, SSLAFormatException, SSLAValidationException, SSLAMetricsException
+from sslamanager.exceptions import SSLASLOException, SSLAFormatException, SSLAValidationException, \
+    SSLAMetricsException, SSLAServiceDescriptionException
 from sslamanager.parser.build import ServicePropertiesType
 from sslamanager.parser.build.specs import TwoOpOperator, UnitType
 from sslamanager.parser.build.specs.security_metric import MetricType
 from sslamanager.parser.build.specs.slo import SloexpressionType, Slotype, OneOpOperator
 from sslamanager.parser.build.wsag import AgreementOffer, ServiceDescriptionTermType
 
-logger = logging.getLogger("uvicorn.default")
+logger = logging.getLogger(__name__)
 
 
 class ServiceDescription(BaseModel):
@@ -198,6 +199,9 @@ class SLOParser:
             two_op_expression = SloexpressionType.TwoOpExpression(operator=operator, operand1=operands[0],
                                                                   operand2=operands[1])
             expression = SloexpressionType(two_op_expression=two_op_expression)
+        else:
+            # without this the SLO would be returned with an empty expression
+            raise SSLASLOException(f"unknown expression type in SLO '{self.get_slo_id()}'")
 
         return Slotype(metric_ref=self.get_slo_metric_ref(),
                        sloexpression=expression,
@@ -218,7 +222,7 @@ class SLOParser:
             operands = [exp.operand1, exp.operand2]
             operator = exp.operator.value
         else:
-            raise Exception(f"unknown operand type in SLO: {slo_type.slo_id}")
+            raise SSLASLOException(f"unknown operand type in SLO: {slo_type.slo_id}")
 
         return SLO(id=slo_type.slo_id,
                    metricREF=slo_type.metric_ref,
@@ -247,13 +251,18 @@ class SSLA:
     def get_service(self, service_name: str) -> "ServiceDescriptionTermType":
         service_descriptions = [desc for desc in self.ssla.terms.all.service_description_term
                                 if desc.service_name == service_name]
+        if not service_descriptions:
+            raise SSLAServiceDescriptionException(f"no service description for service '{service_name}' in SSLA")
         return service_descriptions[0]
 
     def get_first_service(self) -> "ServiceDescriptionTermType":
-        return self.get_services()[0]
+        services = self.get_services()
+        if not services:
+            raise SSLAServiceDescriptionException("no service description in SSLA")
+        return services[0]
 
     def get_first_service_name(self) -> str:
-        return self.get_services_names()[0]
+        return self.get_first_service().service_name
 
     def get_capabilities(self, service_name: str) -> Optional[list["CapabilityType"]]:
         service = self.get_service(service_name)
@@ -367,9 +376,16 @@ class SSLAParser(object):
         # from the resolver map fails loudly instead of silently going online
         xsd_parser = etree.XMLParser(no_network=True)
         xsd_parser.resolvers.add(EmbeddedSchemaResolver())
-        template = etree.parse(self.schema_path, xsd_parser)
-        schema = etree.XMLSchema(template)
-        ssla = etree.XML(ssla_content)
+        try:
+            template = etree.parse(self.schema_path, xsd_parser)
+            schema = etree.XMLSchema(template)
+        except (etree.XMLSyntaxError, etree.XMLSchemaParseError) as e:
+            # the schema ships with the package, so this is a packaging problem
+            raise SSLAValidationException(f"unusable SSLA XML Schema '{self.schema_path}': {e}") from e
+        try:
+            ssla = etree.XML(ssla_content)
+        except etree.XMLSyntaxError as e:
+            raise SSLAFormatException(f"SSLA content is not well-formed XML: {e}") from e
         result = schema.validate(ssla)
         if len(schema.error_log) > 0:
             raise SSLAValidationException(f"invalid SSLA content: {schema.error_log.last_error.message}")

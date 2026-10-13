@@ -10,7 +10,7 @@ from sslamanager.exceptions import SSLAAlreadyExistsException, SSLANotFound
 
 Base = declarative_base()
 
-logger = logging.getLogger("uvicorn.default")
+logger = logging.getLogger(__name__)
 
 
 class MyModel(BaseModel):
@@ -65,6 +65,8 @@ class SSLATable(Base):
     def delete_ssla(service_name: str, database_engine: "Engine"):
         with Session(database_engine) as session:
             sql_object = session.query(SSLATable).filter_by(service=service_name).first()
+            if sql_object is None:
+                raise SSLANotFound(f"SSLA not found for service '{service_name}' and cannot be deleted")
             session.delete(sql_object)
             session.commit()
 

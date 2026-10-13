@@ -30,16 +30,16 @@ class SSLAException(Exception):
     pass
 
 
-class SSLAAlreadyExistsException(Exception):
+class SSLAAlreadyExistsException(SSLAException):
     """
-    Raise this exception when the SSLA contains a high-level issue
+    Raise this exception when an SSLA is already stored for the targeted service
     """
     pass
 
 
-class SSLAValidationException(Exception):
+class SSLAValidationException(SSLAException):
     """
-    Raise this exception when the SSLA contains a high-level issue
+    Raise this exception when the SSLA does not comply with the XML Schema
     """
     pass
 
