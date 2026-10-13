@@ -1,6 +1,6 @@
 [project]
 name = "sslamanager"
-version = "0.1.3"
+version = "0.1.4"
 description = ""
 authors = [
     {name = "Louis Cailliot",email = "louis.cailliot@thalesgroup.com"}
