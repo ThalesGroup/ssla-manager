@@ -1,6 +1,7 @@
+from __future__ import annotations
+
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Optional
 
 __NAMESPACE__ = (
     "http://www.specs-project.eu/resources/schemas/xml/control_frameworks/ccm"
@@ -13,45 +14,35 @@ class CcmcontrolTypeImportanceWeight(Enum):
     HIGH = "HIGH"
 
 
-@dataclass
+@dataclass(kw_only=True)
 class CcmcontrolType:
     class Meta:
         name = "CCMcontrolType"
 
-    description: Optional[str] = field(
-        default=None,
+    description: str = field(
         metadata={
             "type": "Element",
             "namespace": "http://www.specs-project.eu/resources/schemas/xml/control_frameworks/ccm",
-            "required": True,
-        },
+        }
     )
-    importance_weight: Optional[CcmcontrolTypeImportanceWeight] = field(
-        default=None,
+    importance_weight: CcmcontrolTypeImportanceWeight = field(
         metadata={
             "type": "Element",
             "namespace": "http://www.specs-project.eu/resources/schemas/xml/control_frameworks/ccm",
-            "required": True,
-        },
+        }
     )
-    id: Optional[str] = field(
-        default=None,
+    id: str = field(
         metadata={
             "type": "Attribute",
-            "required": True,
-        },
+        }
     )
-    name: Optional[str] = field(
-        default=None,
+    name: str = field(
         metadata={
             "type": "Attribute",
-            "required": True,
-        },
+        }
     )
-    control_domain: Optional[str] = field(
-        default=None,
+    control_domain: str = field(
         metadata={
             "type": "Attribute",
-            "required": True,
-        },
+        }
     )

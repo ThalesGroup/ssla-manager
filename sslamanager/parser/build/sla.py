@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from dataclasses import dataclass, field
 
 from sslamanager.parser.build.specs.sdt import ServiceDescriptionType
@@ -6,7 +8,7 @@ from sslamanager.parser.build.specs.slo import Slotype
 __NAMESPACE__ = "http://www.specs-project.eu/resources/schemas/xml/SLAtemplate"
 
 
-@dataclass
+@dataclass(kw_only=True)
 class Endpoint:
     class Meta:
         name = "endpoint"
@@ -14,15 +16,10 @@ class Endpoint:
             "http://www.specs-project.eu/resources/schemas/xml/SLAtemplate"
         )
 
-    value: str = field(
-        default="",
-        metadata={
-            "required": True,
-        },
-    )
+    value: str = field(default="")
 
 
-@dataclass
+@dataclass(kw_only=True)
 class ObjectiveList:
     class Meta:
         name = "objectiveList"
@@ -40,7 +37,7 @@ class ObjectiveList:
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class ServiceDescription(ServiceDescriptionType):
     class Meta:
         name = "serviceDescription"

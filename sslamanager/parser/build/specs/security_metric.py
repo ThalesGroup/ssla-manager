@@ -1,6 +1,7 @@
+from __future__ import annotations
+
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Optional
 
 __NAMESPACE__ = "http://www.specs-project.eu/resources/schemas/xml/SLAtemplate"
 
@@ -17,67 +18,55 @@ class IntervalTypeIntervalItemsType(Enum):
     FLOAT = "float"
 
 
-@dataclass
+@dataclass(kw_only=True)
 class MetricParameterType:
     class Meta:
         name = "metricParameterType"
 
-    parameter_definition_id: Optional[str] = field(
-        default=None,
+    parameter_definition_id: str = field(
         metadata={
             "name": "parameterDefinitionId",
             "type": "Element",
             "namespace": "http://www.specs-project.eu/resources/schemas/xml/SLAtemplate",
-            "required": True,
-        },
+        }
     )
-    value: Optional[str] = field(
-        default=None,
+    value: str = field(
         metadata={
             "type": "Element",
             "namespace": "http://www.specs-project.eu/resources/schemas/xml/SLAtemplate",
-            "required": True,
-        },
+        }
     )
-    note: Optional[str] = field(
-        default=None,
+    note: str = field(
         metadata={
             "type": "Element",
             "namespace": "http://www.specs-project.eu/resources/schemas/xml/SLAtemplate",
-            "required": True,
-        },
+        }
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class MetricRuleType:
     class Meta:
         name = "metricRuleType"
 
-    rule_definition_id: Optional[str] = field(
-        default=None,
+    rule_definition_id: str = field(
         metadata={
             "name": "ruleDefinitionId",
             "type": "Element",
             "namespace": "http://www.specs-project.eu/resources/schemas/xml/SLAtemplate",
-            "required": True,
-        },
+        }
     )
-    value: Optional[str] = field(
-        default=None,
+    value: str = field(
         metadata={
             "type": "Element",
             "namespace": "http://www.specs-project.eu/resources/schemas/xml/SLAtemplate",
-            "required": True,
-        },
+        }
     )
-    note: Optional[str] = field(
-        default=None,
+    note: str = field(
         metadata={
             "type": "Element",
             "namespace": "http://www.specs-project.eu/resources/schemas/xml/SLAtemplate",
-            "required": True,
-        },
+        }
     )
 
 
@@ -98,55 +87,47 @@ class QuantitativeValueType(Enum):
     RATIO = "Ratio"
 
 
-@dataclass
+@dataclass(kw_only=True)
 class ReferenceType:
     class Meta:
         name = "referenceType"
 
-    name: Optional[str] = field(
-        default=None,
+    name: str = field(
         metadata={
             "type": "Attribute",
-            "required": True,
-        },
+        }
     )
-    reference_id: Optional[str] = field(
-        default=None,
+    reference_id: str = field(
         metadata={
             "name": "referenceId",
             "type": "Attribute",
-            "required": True,
-        },
+        }
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class EnumType:
     class Meta:
         name = "enumType"
 
-    enum_items_type: Optional[EnumTypeEnumItemsType] = field(
-        default=None,
+    enum_items_type: EnumTypeEnumItemsType = field(
         metadata={
             "name": "enumItemsType",
             "type": "Element",
             "namespace": "http://www.specs-project.eu/resources/schemas/xml/SLAtemplate",
-            "required": True,
-        },
+        }
     )
-    enum_items: Optional["EnumType.EnumItems"] = field(
-        default=None,
+    enum_items: EnumType.EnumItems = field(
         metadata={
             "name": "enumItems",
             "type": "Element",
             "namespace": "http://www.specs-project.eu/resources/schemas/xml/SLAtemplate",
-            "required": True,
-        },
+        }
     )
 
-    @dataclass
+    @dataclass(kw_only=True)
     class EnumItems:
-        enum_item: list["EnumType.EnumItems.EnumItem"] = field(
+        enum_item: list[EnumType.EnumItems.EnumItem] = field(
             default_factory=list,
             metadata={
                 "name": "enumItem",
@@ -156,41 +137,35 @@ class EnumType:
             },
         )
 
-        @dataclass
+        @dataclass(kw_only=True)
         class EnumItem:
-            value: Optional[str] = field(
-                default=None,
+            value: str = field(
                 metadata={
                     "type": "Element",
                     "namespace": "http://www.specs-project.eu/resources/schemas/xml/SLAtemplate",
-                    "required": True,
-                },
+                }
             )
-            description: Optional[str] = field(
-                default=None,
+            description: str = field(
                 metadata={
                     "type": "Element",
                     "namespace": "http://www.specs-project.eu/resources/schemas/xml/SLAtemplate",
-                    "required": True,
-                },
+                }
             )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class IntervalType:
     class Meta:
         name = "intervalType"
 
-    interval_items_type: Optional[IntervalTypeIntervalItemsType] = field(
-        default=None,
+    interval_items_type: IntervalTypeIntervalItemsType = field(
         metadata={
             "name": "intervalItemsType",
             "type": "Element",
             "namespace": "http://www.specs-project.eu/resources/schemas/xml/SLAtemplate",
-            "required": True,
-        },
+        }
     )
-    interval_item_start: Optional[object] = field(
+    interval_item_start: None | object = field(
         default=None,
         metadata={
             "name": "intervalItemStart",
@@ -198,7 +173,7 @@ class IntervalType:
             "namespace": "http://www.specs-project.eu/resources/schemas/xml/SLAtemplate",
         },
     )
-    interval_item_stop: Optional[object] = field(
+    interval_item_stop: None | object = field(
         default=None,
         metadata={
             "name": "intervalItemStop",
@@ -206,7 +181,7 @@ class IntervalType:
             "namespace": "http://www.specs-project.eu/resources/schemas/xml/SLAtemplate",
         },
     )
-    interval_item_step: Optional[object] = field(
+    interval_item_step: None | object = field(
         default=None,
         metadata={
             "name": "intervalItemStep",
@@ -216,67 +191,57 @@ class IntervalType:
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class ParameterDefinitionType(ReferenceType):
     class Meta:
         name = "parameterDefinitionType"
 
-    definition: Optional[str] = field(
-        default=None,
+    definition: str = field(
         metadata={
             "type": "Element",
             "namespace": "http://www.specs-project.eu/resources/schemas/xml/SLAtemplate",
-            "required": True,
-        },
+        }
     )
-    parameter_type: Optional[ParameterTypeType] = field(
-        default=None,
+    parameter_type: ParameterTypeType = field(
         metadata={
             "name": "parameterType",
             "type": "Element",
             "namespace": "http://www.specs-project.eu/resources/schemas/xml/SLAtemplate",
-            "required": True,
-        },
+        }
     )
-    note: Optional[str] = field(
-        default=None,
+    note: str = field(
         metadata={
             "type": "Element",
             "namespace": "http://www.specs-project.eu/resources/schemas/xml/SLAtemplate",
-            "required": True,
-        },
+        }
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class RuleDefinitionType(ReferenceType):
     class Meta:
         name = "ruleDefinitionType"
 
-    definition: Optional[str] = field(
-        default=None,
+    definition: str = field(
         metadata={
             "type": "Element",
             "namespace": "http://www.specs-project.eu/resources/schemas/xml/SLAtemplate",
-            "required": True,
-        },
+        }
     )
-    note: Optional[str] = field(
-        default=None,
+    note: str = field(
         metadata={
             "type": "Element",
             "namespace": "http://www.specs-project.eu/resources/schemas/xml/SLAtemplate",
-            "required": True,
-        },
+        }
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class ScaleType:
     class Meta:
         name = "scaleType"
 
-    qualitative: Optional[QualitativeValueType] = field(
+    qualitative: None | QualitativeValueType = field(
         default=None,
         metadata={
             "name": "Qualitative",
@@ -284,7 +249,7 @@ class ScaleType:
             "namespace": "http://www.specs-project.eu/resources/schemas/xml/SLAtemplate",
         },
     )
-    quantitative: Optional[QuantitativeValueType] = field(
+    quantitative: None | QuantitativeValueType = field(
         default=None,
         metadata={
             "name": "Quantitative",
@@ -294,12 +259,12 @@ class ScaleType:
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class UnitType:
     class Meta:
         name = "unitType"
 
-    enum_unit: Optional[EnumType] = field(
+    enum_unit: None | EnumType = field(
         default=None,
         metadata={
             "name": "enumUnit",
@@ -307,7 +272,7 @@ class UnitType:
             "namespace": "http://www.specs-project.eu/resources/schemas/xml/SLAtemplate",
         },
     )
-    interval_unit: Optional[IntervalType] = field(
+    interval_unit: None | IntervalType = field(
         default=None,
         metadata={
             "name": "intervalUnit",
@@ -315,73 +280,59 @@ class UnitType:
             "namespace": "http://www.specs-project.eu/resources/schemas/xml/SLAtemplate",
         },
     )
-    name: Optional[str] = field(
-        default=None,
+    name: str = field(
         metadata={
             "type": "Attribute",
-            "required": True,
-        },
+        }
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class MetricDefinitionType:
-    unit: Optional[UnitType] = field(
-        default=None,
+    unit: UnitType = field(
         metadata={
             "type": "Element",
             "namespace": "http://www.specs-project.eu/resources/schemas/xml/SLAtemplate",
-            "required": True,
-        },
+        }
     )
-    scale: Optional[ScaleType] = field(
-        default=None,
+    scale: ScaleType = field(
         metadata={
             "type": "Element",
             "namespace": "http://www.specs-project.eu/resources/schemas/xml/SLAtemplate",
-            "required": True,
-        },
+        }
     )
-    expression: Optional[str] = field(
-        default=None,
+    expression: str = field(
         metadata={
             "type": "Element",
             "namespace": "http://www.specs-project.eu/resources/schemas/xml/SLAtemplate",
-            "required": True,
-        },
+        }
     )
-    definition: Optional[str] = field(
-        default=None,
+    definition: str = field(
         metadata={
             "type": "Element",
             "namespace": "http://www.specs-project.eu/resources/schemas/xml/SLAtemplate",
-            "required": True,
-        },
+        }
     )
-    note: Optional[str] = field(
-        default=None,
+    note: str = field(
         metadata={
             "type": "Element",
             "namespace": "http://www.specs-project.eu/resources/schemas/xml/SLAtemplate",
-            "required": True,
-        },
+        }
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class AbstractMetricType(ReferenceType):
-    metric_definition: Optional[MetricDefinitionType] = field(
-        default=None,
+    metric_definition: MetricDefinitionType = field(
         metadata={
             "name": "MetricDefinition",
             "type": "Element",
             "namespace": "http://www.specs-project.eu/resources/schemas/xml/SLAtemplate",
-            "required": True,
-        },
+        }
     )
-    abstract_metric_rule_definition: Optional[
-        "AbstractMetricType.AbstractMetricRuleDefinition"
-    ] = field(
+    abstract_metric_rule_definition: (
+        None | AbstractMetricType.AbstractMetricRuleDefinition
+    ) = field(
         default=None,
         metadata={
             "name": "AbstractMetricRuleDefinition",
@@ -389,9 +340,9 @@ class AbstractMetricType(ReferenceType):
             "namespace": "http://www.specs-project.eu/resources/schemas/xml/SLAtemplate",
         },
     )
-    abstract_metric_parameter_definition: Optional[
-        "AbstractMetricType.AbstractMetricParameterDefinition"
-    ] = field(
+    abstract_metric_parameter_definition: (
+        None | AbstractMetricType.AbstractMetricParameterDefinition
+    ) = field(
         default=None,
         metadata={
             "name": "AbstractMetricParameterDefinition",
@@ -408,7 +359,7 @@ class AbstractMetricType(ReferenceType):
         },
     )
 
-    @dataclass
+    @dataclass(kw_only=True)
     class AbstractMetricRuleDefinition:
         rule_definition: list[RuleDefinitionType] = field(
             default_factory=list,
@@ -419,7 +370,7 @@ class AbstractMetricType(ReferenceType):
             },
         )
 
-    @dataclass
+    @dataclass(kw_only=True)
     class AbstractMetricParameterDefinition:
         parameter_definition: list[ParameterDefinitionType] = field(
             default_factory=list,
@@ -431,9 +382,9 @@ class AbstractMetricType(ReferenceType):
         )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class MetricType(AbstractMetricType):
-    primary_abstract_metric: Optional[str] = field(
+    primary_abstract_metric: None | str = field(
         default=None,
         metadata={
             "name": "PrimaryAbstractMetric",
@@ -441,7 +392,7 @@ class MetricType(AbstractMetricType):
             "namespace": "http://www.specs-project.eu/resources/schemas/xml/SLAtemplate",
         },
     )
-    metric_rules: list["MetricType.MetricRules"] = field(
+    metric_rules: list[MetricType.MetricRules] = field(
         default_factory=list,
         metadata={
             "name": "MetricRules",
@@ -449,7 +400,7 @@ class MetricType(AbstractMetricType):
             "namespace": "http://www.specs-project.eu/resources/schemas/xml/SLAtemplate",
         },
     )
-    metric_parameters: list["MetricType.MetricParameters"] = field(
+    metric_parameters: list[MetricType.MetricParameters] = field(
         default_factory=list,
         metadata={
             "name": "MetricParameters",
@@ -457,7 +408,7 @@ class MetricType(AbstractMetricType):
             "namespace": "http://www.specs-project.eu/resources/schemas/xml/SLAtemplate",
         },
     )
-    note: Optional[str] = field(
+    note: None | str = field(
         default=None,
         metadata={
             "type": "Element",
@@ -465,32 +416,28 @@ class MetricType(AbstractMetricType):
         },
     )
 
-    @dataclass
+    @dataclass(kw_only=True)
     class MetricRules:
-        metric_rule: Optional[MetricRuleType] = field(
-            default=None,
+        metric_rule: MetricRuleType = field(
             metadata={
                 "name": "MetricRule",
                 "type": "Element",
                 "namespace": "http://www.specs-project.eu/resources/schemas/xml/SLAtemplate",
-                "required": True,
-            },
+            }
         )
 
-    @dataclass
+    @dataclass(kw_only=True)
     class MetricParameters:
-        metric_parameter: Optional[MetricParameterType] = field(
-            default=None,
+        metric_parameter: MetricParameterType = field(
             metadata={
                 "name": "MetricParameter",
                 "type": "Element",
                 "namespace": "http://www.specs-project.eu/resources/schemas/xml/SLAtemplate",
-                "required": True,
-            },
+            }
         )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class SecurityMetricsType:
     class Meta:
         name = "security_metricsType"

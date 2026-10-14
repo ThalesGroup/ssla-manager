@@ -78,18 +78,18 @@ Name                                                              Stmts   Miss  
 -------------------------------------------------------------------------------------
 sslamanager/__init__.py                                               0      0   100%
 sslamanager/database/__init__.py                                      0      0   100%
-sslamanager/database/ssla_table.py                                   53      1    98%
+sslamanager/database/ssla_table.py                                   55      2    96%
 sslamanager/exceptions.py                                            23      0   100%
 sslamanager/parser/__init__.py                                        0      0   100%
 sslamanager/parser/build/__init__.py                                  5      0   100%
 sslamanager/parser/build/bf_2.py                                     30      0   100%
 sslamanager/parser/build/pkg_2001/__init__.py                         2      0   100%
-sslamanager/parser/build/pkg_2001/xmlschema.py                      694      0   100%
+sslamanager/parser/build/pkg_2001/xmlschema.py                      678      0   100%
 sslamanager/parser/build/pkg_2005/__init__.py                         0      0   100%
 sslamanager/parser/build/pkg_2005/pkg_08/__init__.py                  0      0   100%
 sslamanager/parser/build/pkg_2005/pkg_08/addressing/__init__.py       2      0   100%
 sslamanager/parser/build/pkg_2005/pkg_08/addressing/ws_addr.py      111      0   100%
-sslamanager/parser/build/sla.py                                      21      0   100%
+sslamanager/parser/build/sla.py                                      22      0   100%
 sslamanager/parser/build/specs/__init__.py                            5      0   100%
 sslamanager/parser/build/specs/capability.py                         20      0   100%
 sslamanager/parser/build/specs/controls/__init__.py                   3      0   100%
@@ -99,13 +99,13 @@ sslamanager/parser/build/specs/sdt.py                                36      0  
 sslamanager/parser/build/specs/security_metric.py                   127      0   100%
 sslamanager/parser/build/specs/slo.py                                40      0   100%
 sslamanager/parser/build/wsag.py                                    211      0   100%
-sslamanager/parser/build/xml.py                                       4      0   100%
-sslamanager/parser/ssla_parser.py                                   220     14    94%
+sslamanager/parser/build/xml.py                                       5      0   100%
+sslamanager/parser/ssla_parser.py                                   232     20    91%
 sslamanager/test/__init__.py                                          0      0   100%
 sslamanager/test/database/__init__.py                                 0      0   100%
 sslamanager/test/database/ssla_table_test.py                         79      0   100%
 sslamanager/test/parser/__init__.py                                   0      0   100%
 sslamanager/test/parser/ssla_parser_test.py                         168      0   100%
 -------------------------------------------------------------------------------------
-TOTAL                                                              1890     15    99%
+TOTAL                                                              1890     22    99%
 ```

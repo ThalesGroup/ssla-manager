@@ -1,5 +1,6 @@
+from __future__ import annotations
+
 from dataclasses import dataclass, field
-from typing import Optional
 
 from sslamanager.parser.build.specs.capability import CapabilityType
 from sslamanager.parser.build.specs.security_metric import MetricType
@@ -7,12 +8,12 @@ from sslamanager.parser.build.specs.security_metric import MetricType
 __NAMESPACE__ = "http://www.specs-project.eu/resources/schemas/xml/SLAtemplate"
 
 
-@dataclass
+@dataclass(kw_only=True)
 class ServiceDescriptionType:
     class Meta:
         name = "serviceDescriptionType"
 
-    service_resources: list["ServiceDescriptionType.ServiceResources"] = field(
+    service_resources: list[ServiceDescriptionType.ServiceResources] = field(
         default_factory=list,
         metadata={
             "name": "serviceResources",
@@ -20,28 +21,24 @@ class ServiceDescriptionType:
             "namespace": "http://www.specs-project.eu/resources/schemas/xml/SLAtemplate",
         },
     )
-    capabilities: Optional["ServiceDescriptionType.Capabilities"] = field(
+    capabilities: ServiceDescriptionType.Capabilities = field(
+        metadata={
+            "type": "Element",
+            "namespace": "http://www.specs-project.eu/resources/schemas/xml/SLAtemplate",
+        }
+    )
+    security_metrics: None | ServiceDescriptionType.SecurityMetrics = field(
         default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.specs-project.eu/resources/schemas/xml/SLAtemplate",
-            "required": True,
         },
     )
-    security_metrics: Optional["ServiceDescriptionType.SecurityMetrics"] = (
-        field(
-            default=None,
-            metadata={
-                "type": "Element",
-                "namespace": "http://www.specs-project.eu/resources/schemas/xml/SLAtemplate",
-            },
-        )
-    )
 
-    @dataclass
+    @dataclass(kw_only=True)
     class ServiceResources:
         resources_provider: list[
-            "ServiceDescriptionType.ServiceResources.ResourcesProvider"
+            ServiceDescriptionType.ServiceResources.ResourcesProvider
         ] = field(
             default_factory=list,
             metadata={
@@ -52,10 +49,10 @@ class ServiceDescriptionType:
             },
         )
 
-        @dataclass
+        @dataclass(kw_only=True)
         class ResourcesProvider:
             vm: list[
-                "ServiceDescriptionType.ServiceResources.ResourcesProvider.Vm"
+                ServiceDescriptionType.ServiceResources.ResourcesProvider.Vm
             ] = field(
                 default_factory=list,
                 metadata={
@@ -64,78 +61,68 @@ class ServiceDescriptionType:
                     "namespace": "http://www.specs-project.eu/resources/schemas/xml/SLAtemplate",
                 },
             )
-            id: Optional[str] = field(
-                default=None,
+            id: str = field(
                 metadata={
                     "type": "Attribute",
-                    "required": True,
-                },
+                }
             )
-            name: Optional[str] = field(
-                default=None,
+            name: str = field(
                 metadata={
                     "type": "Attribute",
-                    "required": True,
-                },
+                }
             )
-            zone: Optional[str] = field(
-                default=None,
+            zone: str = field(
                 metadata={
                     "type": "Attribute",
-                    "required": True,
-                },
+                }
             )
-            description: Optional[str] = field(
-                default=None,
+            description: str = field(
                 metadata={
                     "type": "Attribute",
-                    "required": True,
-                },
+                }
             )
-            max_allowed_vms: Optional[int] = field(
+            max_allowed_vms: None | int = field(
                 default=None,
                 metadata={
                     "name": "maxAllowedVMs",
                     "type": "Attribute",
                 },
             )
-            min_required_vms: Optional[int] = field(
+            min_required_vms: None | int = field(
                 default=None,
                 metadata={
                     "name": "minRequiredVMs",
                     "type": "Attribute",
                 },
             )
-            label: Optional[str] = field(
-                default=None,
+            label: str = field(
                 metadata={
                     "type": "Attribute",
-                    "required": True,
-                },
+                }
             )
 
-            @dataclass
+            @dataclass(kw_only=True)
             class Vm:
-                appliance: Optional[str] = field(
+                appliance: None | str = field(
                     default=None,
                     metadata={
                         "type": "Attribute",
                     },
                 )
-                hardware: Optional[str] = field(
+                hardware: None | str = field(
                     default=None,
                     metadata={
                         "type": "Attribute",
                     },
                 )
-                description: Optional[str] = field(
+                description: None | str = field(
                     default=None,
                     metadata={
                         "type": "Attribute",
                     },
                 )
 
-    @dataclass
+    @dataclass(kw_only=True)
     class Capabilities:
         capability: list[CapabilityType] = field(
             default_factory=list,
@@ -146,7 +133,7 @@ class ServiceDescriptionType:
             },
         )
 
-    @dataclass
+    @dataclass(kw_only=True)
     class SecurityMetrics:
         metric: list[MetricType] = field(
             default_factory=list,

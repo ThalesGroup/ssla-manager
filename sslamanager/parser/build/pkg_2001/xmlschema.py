@@ -1,6 +1,8 @@
+from __future__ import annotations
+
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Any, Optional, Union
+from typing import Any
 from xml.etree.ElementTree import QName
 
 from sslamanager.parser.build.xml import LangValue
@@ -21,11 +23,11 @@ class AllMinOccurs(Enum):
     VALUE_1 = 1
 
 
-@dataclass
+@dataclass(kw_only=True)
 class AnyType:
     """
-    Not the real urType, but as close an approximation as we can get in the XML
-    representation.
+    Not the real urType, but as close an approximation as we can get in the
+    XML representation.
     """
 
     class Meta:
@@ -48,13 +50,13 @@ class AnyType:
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class Appinfo:
     class Meta:
         name = "appinfo"
         namespace = "http://www.w3.org/2001/XMLSchema"
 
-    source: Optional[str] = field(
+    source: None | str = field(
         default=None,
         metadata={
             "type": "Attribute",
@@ -86,7 +88,7 @@ class AttributeUse(Enum):
 class BlockSet(Enum):
     """
     A utility type, not for public use #all or (possibly empty) subset of
-    {substitution, extension, restriction}
+    {substitution, extension, restriction}.
     """
 
     ALL = "#all"
@@ -98,7 +100,7 @@ class BlockSet(Enum):
 class DerivationSet(Enum):
     """
     A utility type, not for public use #all or (possibly empty) subset of
-    {extension, restriction}
+    {extension, restriction}.
     """
 
     EXTENSION = "extension"
@@ -118,7 +120,7 @@ class FormChoice(Enum):
 class FullDerivationSet(Enum):
     """
     A utility type, not for public use #all or (possibly empty) subset of
-    {extension, restriction, list, union}
+    {extension, restriction, list, union}.
     """
 
     EXTENSION = "extension"
@@ -149,17 +151,17 @@ class NarrowMaxMinMinOccurs(Enum):
     VALUE_1 = 1
 
 
-@dataclass
+@dataclass(kw_only=True)
 class OpenAttrs:
     """
-    This type is extended by almost all schema types to allow attributes from other
-    namespaces to be added to user schemas.
+    This type is extended by almost all schema types to allow attributes
+    from other namespaces to be added to user schemas.
     """
 
     class Meta:
         name = "openAttrs"
 
-    any_element: Optional[object] = field(
+    any_element: None | object = field(
         default=None,
         metadata={
             "type": "Wildcard",
@@ -177,8 +179,8 @@ class OpenAttrs:
 
 class SimpleDerivationSet(Enum):
     """
-    #all or (possibly empty) subset of {restriction, union, list} A utility type,
-    not for public use
+    #all or (possibly empty) subset of {restriction, union, list} A utility
+    type, not for public use.
     """
 
     ALL = "#all"
@@ -199,19 +201,19 @@ class WildcardProcessContents(Enum):
     STRICT = "strict"
 
 
-@dataclass
+@dataclass(kw_only=True)
 class Documentation:
     class Meta:
         name = "documentation"
         namespace = "http://www.w3.org/2001/XMLSchema"
 
-    source: Optional[str] = field(
+    source: None | str = field(
         default=None,
         metadata={
             "type": "Attribute",
         },
     )
-    lang: Optional[Union[str, LangValue]] = field(
+    lang: None | str | LangValue = field(
         default=None,
         metadata={
             "type": "Attribute",
@@ -235,7 +237,7 @@ class Documentation:
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class Annotation(OpenAttrs):
     class Meta:
         name = "annotation"
@@ -253,7 +255,7 @@ class Annotation(OpenAttrs):
             "type": "Element",
         },
     )
-    id: Optional[str] = field(
+    id: None | str = field(
         default=None,
         metadata={
             "type": "Attribute",
@@ -261,7 +263,7 @@ class Annotation(OpenAttrs):
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class Annotated(OpenAttrs):
     """
     This type is extended by all types which allow annotation other than
@@ -271,14 +273,14 @@ class Annotated(OpenAttrs):
     class Meta:
         name = "annotated"
 
-    annotation: Optional[Annotation] = field(
+    annotation: None | Annotation = field(
         default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.w3.org/2001/XMLSchema",
         },
     )
-    id: Optional[str] = field(
+    id: None | str = field(
         default=None,
         metadata={
             "type": "Attribute",
@@ -286,17 +288,15 @@ class Annotated(OpenAttrs):
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class Facet(Annotated):
     class Meta:
         name = "facet"
 
-    value: Optional[object] = field(
-        default=None,
+    value: object = field(
         metadata={
             "type": "Attribute",
-            "required": True,
-        },
+        }
     )
     fixed: bool = field(
         default=False,
@@ -306,35 +306,33 @@ class Facet(Annotated):
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class FieldType(Annotated):
     class Meta:
         name = "field"
         namespace = "http://www.w3.org/2001/XMLSchema"
 
-    xpath: Optional[str] = field(
-        default=None,
+    xpath: str = field(
         metadata={
             "type": "Attribute",
-            "required": True,
             "pattern": r"(\.//)?((((child::)?((\i\c*:)?(\i\c*|\*)))|\.)/)*((((child::)?((\i\c*:)?(\i\c*|\*)))|\.)|((attribute::|@)((\i\c*:)?(\i\c*|\*))))(\|(\.//)?((((child::)?((\i\c*:)?(\i\c*|\*)))|\.)/)*((((child::)?((\i\c*:)?(\i\c*|\*)))|\.)|((attribute::|@)((\i\c*:)?(\i\c*|\*)))))*",
-        },
+        }
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class Import(Annotated):
     class Meta:
         name = "import"
         namespace = "http://www.w3.org/2001/XMLSchema"
 
-    namespace: Optional[str] = field(
+    namespace: None | str = field(
         default=None,
         metadata={
             "type": "Attribute",
         },
     )
-    schema_location: Optional[str] = field(
+    schema_location: None | str = field(
         default=None,
         metadata={
             "name": "schemaLocation",
@@ -343,42 +341,38 @@ class Import(Annotated):
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class Include(Annotated):
     class Meta:
         name = "include"
         namespace = "http://www.w3.org/2001/XMLSchema"
 
-    schema_location: Optional[str] = field(
-        default=None,
+    schema_location: str = field(
         metadata={
             "name": "schemaLocation",
             "type": "Attribute",
-            "required": True,
-        },
+        }
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class Notation(Annotated):
     class Meta:
         name = "notation"
         namespace = "http://www.w3.org/2001/XMLSchema"
 
-    name: Optional[str] = field(
+    name: str = field(
+        metadata={
+            "type": "Attribute",
+        }
+    )
+    public: None | str = field(
         default=None,
         metadata={
             "type": "Attribute",
-            "required": True,
         },
     )
-    public: Optional[str] = field(
-        default=None,
-        metadata={
-            "type": "Attribute",
-        },
-    )
-    system: Optional[str] = field(
+    system: None | str = field(
         default=None,
         metadata={
             "type": "Attribute",
@@ -386,28 +380,23 @@ class Notation(Annotated):
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class Selector(Annotated):
     class Meta:
         name = "selector"
         namespace = "http://www.w3.org/2001/XMLSchema"
 
-    xpath: Optional[str] = field(
-        default=None,
+    xpath: str = field(
         metadata={
             "type": "Attribute",
-            "required": True,
             "pattern": r"(\.//)?(((child::)?((\i\c*:)?(\i\c*|\*)))|\.)(/(((child::)?((\i\c*:)?(\i\c*|\*)))|\.))*(\|(\.//)?(((child::)?((\i\c*:)?(\i\c*|\*)))|\.)(/(((child::)?((\i\c*:)?(\i\c*|\*)))|\.))*)*",
-        },
+        }
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class SimpleTypeAbstract(Annotated):
     """
-
-    "
-
     :ivar restriction:
     :ivar list_value:
     :ivar union:
@@ -418,14 +407,14 @@ class SimpleTypeAbstract(Annotated):
     class Meta:
         name = "simpleType"
 
-    restriction: Optional["Restriction"] = field(
+    restriction: None | Restriction = field(
         default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.w3.org/2001/XMLSchema",
         },
     )
-    list_value: Optional["List"] = field(
+    list_value: None | List = field(
         default=None,
         metadata={
             "name": "list",
@@ -433,20 +422,20 @@ class SimpleTypeAbstract(Annotated):
             "namespace": "http://www.w3.org/2001/XMLSchema",
         },
     )
-    union: Optional["UnionType"] = field(
+    union: None | UnionType = field(
         default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.w3.org/2001/XMLSchema",
         },
     )
-    final: Optional[SimpleDerivationSet] = field(
+    final: None | SimpleDerivationSet = field(
         default=None,
         metadata={
             "type": "Attribute",
         },
     )
-    name: Optional[str] = field(
+    name: None | str = field(
         default=None,
         metadata={
             "type": "Attribute",
@@ -454,7 +443,7 @@ class SimpleTypeAbstract(Annotated):
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class Wildcard(Annotated):
     class Meta:
         name = "wildcard"
@@ -474,7 +463,7 @@ class Wildcard(Annotated):
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class AnyType(Wildcard):
     class Meta:
         name = "any"
@@ -487,7 +476,7 @@ class AnyType(Wildcard):
             "type": "Attribute",
         },
     )
-    max_occurs: Union[int, AllNniValue] = field(
+    max_occurs: int | AllNniValue = field(
         default=1,
         metadata={
             "name": "maxOccurs",
@@ -496,25 +485,23 @@ class AnyType(Wildcard):
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class AnyAttribute(Wildcard):
     class Meta:
         name = "anyAttribute"
         namespace = "http://www.w3.org/2001/XMLSchema"
 
 
-@dataclass
+@dataclass(kw_only=True)
 class Keybase(Annotated):
     class Meta:
         name = "keybase"
 
-    selector: Optional[Selector] = field(
-        default=None,
+    selector: Selector = field(
         metadata={
             "type": "Element",
             "namespace": "http://www.w3.org/2001/XMLSchema",
-            "required": True,
-        },
+        }
     )
     field_value: list[FieldType] = field(
         default_factory=list,
@@ -525,21 +512,16 @@ class Keybase(Annotated):
             "min_occurs": 1,
         },
     )
-    name: Optional[str] = field(
-        default=None,
+    name: str = field(
         metadata={
             "type": "Attribute",
-            "required": True,
-        },
+        }
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class LocalSimpleType(SimpleTypeAbstract):
     """
-
-    "
-
     :ivar any_element:
     :ivar name: Forbidden when nested
     :ivar final:
@@ -571,35 +553,35 @@ class LocalSimpleType(SimpleTypeAbstract):
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class MaxExclusive(Facet):
     class Meta:
         name = "maxExclusive"
         namespace = "http://www.w3.org/2001/XMLSchema"
 
 
-@dataclass
+@dataclass(kw_only=True)
 class MaxInclusive(Facet):
     class Meta:
         name = "maxInclusive"
         namespace = "http://www.w3.org/2001/XMLSchema"
 
 
-@dataclass
+@dataclass(kw_only=True)
 class MinExclusive(Facet):
     class Meta:
         name = "minExclusive"
         namespace = "http://www.w3.org/2001/XMLSchema"
 
 
-@dataclass
+@dataclass(kw_only=True)
 class MinInclusive(Facet):
     class Meta:
         name = "minInclusive"
         namespace = "http://www.w3.org/2001/XMLSchema"
 
 
-@dataclass
+@dataclass(kw_only=True)
 class NoFixedFacet(Facet):
     class Meta:
         name = "noFixedFacet"
@@ -620,7 +602,7 @@ class NoFixedFacet(Facet):
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class NumFacet(Facet):
     class Meta:
         name = "numFacet"
@@ -632,21 +614,16 @@ class NumFacet(Facet):
             "type": "Ignore",
         },
     )
-    value: Optional[int] = field(
-        default=None,
+    value: int = field(
         metadata={
             "type": "Attribute",
-            "required": True,
-        },
+        }
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class TopLevelSimpleType(SimpleTypeAbstract):
     """
-
-    "
-
     :ivar any_element:
     :ivar name: Required at the top level
     """
@@ -661,16 +638,14 @@ class TopLevelSimpleType(SimpleTypeAbstract):
             "type": "Ignore",
         },
     )
-    name: Optional[str] = field(
-        default=None,
+    name: str = field(
         metadata={
             "type": "Attribute",
-            "required": True,
-        },
+        }
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class WhiteSpace(Facet):
     class Meta:
         name = "whiteSpace"
@@ -683,21 +658,19 @@ class WhiteSpace(Facet):
             "type": "Ignore",
         },
     )
-    value: Optional[WhiteSpaceValue] = field(
-        default=None,
+    value: WhiteSpaceValue = field(
         metadata={
             "type": "Attribute",
-            "required": True,
-        },
+        }
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class Attribute1(Annotated):
     class Meta:
         name = "attribute"
 
-    simple_type: Optional[LocalSimpleType] = field(
+    simple_type: None | LocalSimpleType = field(
         default=None,
         metadata={
             "name": "simpleType",
@@ -705,19 +678,19 @@ class Attribute1(Annotated):
             "namespace": "http://www.w3.org/2001/XMLSchema",
         },
     )
-    name: Optional[str] = field(
+    name: None | str = field(
         default=None,
         metadata={
             "type": "Attribute",
         },
     )
-    ref: Optional[QName] = field(
+    ref: None | QName = field(
         default=None,
         metadata={
             "type": "Attribute",
         },
     )
-    type_value: Optional[QName] = field(
+    type_value: None | QName = field(
         default=None,
         metadata={
             "name": "type",
@@ -730,19 +703,19 @@ class Attribute1(Annotated):
             "type": "Attribute",
         },
     )
-    default: Optional[str] = field(
+    default: None | str = field(
         default=None,
         metadata={
             "type": "Attribute",
         },
     )
-    fixed: Optional[str] = field(
+    fixed: None | str = field(
         default=None,
         metadata={
             "type": "Attribute",
         },
     )
-    form: Optional[FormChoice] = field(
+    form: None | FormChoice = field(
         default=None,
         metadata={
             "type": "Attribute",
@@ -750,63 +723,61 @@ class Attribute1(Annotated):
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class Enumeration(NoFixedFacet):
     class Meta:
         name = "enumeration"
         namespace = "http://www.w3.org/2001/XMLSchema"
 
 
-@dataclass
+@dataclass(kw_only=True)
 class FractionDigits(NumFacet):
     class Meta:
         name = "fractionDigits"
         namespace = "http://www.w3.org/2001/XMLSchema"
 
 
-@dataclass
+@dataclass(kw_only=True)
 class Key(Keybase):
     class Meta:
         name = "key"
         namespace = "http://www.w3.org/2001/XMLSchema"
 
 
-@dataclass
+@dataclass(kw_only=True)
 class Keyref(Keybase):
     class Meta:
         name = "keyref"
         namespace = "http://www.w3.org/2001/XMLSchema"
 
-    refer: Optional[QName] = field(
-        default=None,
+    refer: QName = field(
         metadata={
             "type": "Attribute",
-            "required": True,
-        },
+        }
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class Length(NumFacet):
     class Meta:
         name = "length"
         namespace = "http://www.w3.org/2001/XMLSchema"
 
 
-@dataclass
+@dataclass(kw_only=True)
 class List(Annotated):
     class Meta:
         name = "list"
         namespace = "http://www.w3.org/2001/XMLSchema"
 
-    simple_type: Optional[LocalSimpleType] = field(
+    simple_type: None | LocalSimpleType = field(
         default=None,
         metadata={
             "name": "simpleType",
             "type": "Element",
         },
     )
-    item_type: Optional[QName] = field(
+    item_type: None | QName = field(
         default=None,
         metadata={
             "name": "itemType",
@@ -815,21 +786,21 @@ class List(Annotated):
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class MaxLength(NumFacet):
     class Meta:
         name = "maxLength"
         namespace = "http://www.w3.org/2001/XMLSchema"
 
 
-@dataclass
+@dataclass(kw_only=True)
 class MinLength(NumFacet):
     class Meta:
         name = "minLength"
         namespace = "http://www.w3.org/2001/XMLSchema"
 
 
-@dataclass
+@dataclass(kw_only=True)
 class Pattern(NoFixedFacet):
     class Meta:
         name = "pattern"
@@ -842,23 +813,21 @@ class Pattern(NoFixedFacet):
             "type": "Ignore",
         },
     )
-    value: Optional[str] = field(
-        default=None,
+    value: str = field(
         metadata={
             "type": "Attribute",
-            "required": True,
-        },
+        }
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class SimpleType(TopLevelSimpleType):
     class Meta:
         name = "simpleType"
         namespace = "http://www.w3.org/2001/XMLSchema"
 
 
-@dataclass
+@dataclass(kw_only=True)
 class TotalDigits(NumFacet):
     class Meta:
         name = "totalDigits"
@@ -873,7 +842,7 @@ class TotalDigits(NumFacet):
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class UnionType(Annotated):
     class Meta:
         name = "union"
@@ -896,14 +865,14 @@ class UnionType(Annotated):
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class Unique(Keybase):
     class Meta:
         name = "unique"
         namespace = "http://www.w3.org/2001/XMLSchema"
 
 
-@dataclass
+@dataclass(kw_only=True)
 class AttributeGroupAbstract(Annotated):
     class Meta:
         name = "attributeGroup"
@@ -915,7 +884,7 @@ class AttributeGroupAbstract(Annotated):
             "namespace": "http://www.w3.org/2001/XMLSchema",
         },
     )
-    attribute_group: list["AttributeGroupRef"] = field(
+    attribute_group: list[AttributeGroupRef] = field(
         default_factory=list,
         metadata={
             "name": "attributeGroup",
@@ -923,7 +892,7 @@ class AttributeGroupAbstract(Annotated):
             "namespace": "http://www.w3.org/2001/XMLSchema",
         },
     )
-    any_attribute: Optional[AnyAttribute] = field(
+    any_attribute: None | AnyAttribute = field(
         default=None,
         metadata={
             "name": "anyAttribute",
@@ -931,13 +900,13 @@ class AttributeGroupAbstract(Annotated):
             "namespace": "http://www.w3.org/2001/XMLSchema",
         },
     )
-    name: Optional[str] = field(
+    name: None | str = field(
         default=None,
         metadata={
             "type": "Attribute",
         },
     )
-    ref: Optional[QName] = field(
+    ref: None | QName = field(
         default=None,
         metadata={
             "type": "Attribute",
@@ -945,13 +914,13 @@ class AttributeGroupAbstract(Annotated):
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class Restriction(Annotated):
     class Meta:
         name = "restriction"
         namespace = "http://www.w3.org/2001/XMLSchema"
 
-    simple_type: Optional[LocalSimpleType] = field(
+    simple_type: None | LocalSimpleType = field(
         default=None,
         metadata={
             "name": "simpleType",
@@ -1039,7 +1008,7 @@ class Restriction(Annotated):
             "type": "Element",
         },
     )
-    base: Optional[QName] = field(
+    base: None | QName = field(
         default=None,
         metadata={
             "type": "Attribute",
@@ -1047,7 +1016,7 @@ class Restriction(Annotated):
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class TopLevelAttribute(Attribute1):
     class Meta:
         name = "topLevelAttribute"
@@ -1080,23 +1049,21 @@ class TopLevelAttribute(Attribute1):
             "type": "Ignore",
         },
     )
-    name: Optional[str] = field(
-        default=None,
+    name: str = field(
         metadata={
             "type": "Attribute",
-            "required": True,
-        },
+        }
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class Attribute(TopLevelAttribute):
     class Meta:
         name = "attribute"
         namespace = "http://www.w3.org/2001/XMLSchema"
 
 
-@dataclass
+@dataclass(kw_only=True)
 class AttributeGroupRef(AttributeGroupAbstract):
     class Meta:
         name = "attributeGroupRef"
@@ -1129,12 +1096,10 @@ class AttributeGroupRef(AttributeGroupAbstract):
             "type": "Ignore",
         },
     )
-    ref: Optional[QName] = field(
-        default=None,
+    ref: QName = field(
         metadata={
             "type": "Attribute",
-            "required": True,
-        },
+        }
     )
     name: Any = field(
         init=False,
@@ -1145,7 +1110,7 @@ class AttributeGroupRef(AttributeGroupAbstract):
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class NamedAttributeGroup(AttributeGroupAbstract):
     class Meta:
         name = "namedAttributeGroup"
@@ -1157,12 +1122,10 @@ class NamedAttributeGroup(AttributeGroupAbstract):
             "type": "Ignore",
         },
     )
-    name: Optional[str] = field(
-        default=None,
+    name: str = field(
         metadata={
             "type": "Attribute",
-            "required": True,
-        },
+        }
     )
     ref: Any = field(
         init=False,
@@ -1173,19 +1136,16 @@ class NamedAttributeGroup(AttributeGroupAbstract):
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class AttributeGroup(NamedAttributeGroup):
     class Meta:
         name = "attributeGroup"
         namespace = "http://www.w3.org/2001/XMLSchema"
 
 
-@dataclass
+@dataclass(kw_only=True)
 class ComplexTypeAbstract(Annotated):
     """
-
-    "
-
     :ivar simple_content:
     :ivar complex_content:
     :ivar group:
@@ -1206,7 +1166,7 @@ class ComplexTypeAbstract(Annotated):
     class Meta:
         name = "complexType"
 
-    simple_content: Optional["SimpleContent"] = field(
+    simple_content: None | SimpleContent = field(
         default=None,
         metadata={
             "name": "simpleContent",
@@ -1214,7 +1174,7 @@ class ComplexTypeAbstract(Annotated):
             "namespace": "http://www.w3.org/2001/XMLSchema",
         },
     )
-    complex_content: Optional["ComplexContent"] = field(
+    complex_content: None | ComplexContent = field(
         default=None,
         metadata={
             "name": "complexContent",
@@ -1222,28 +1182,28 @@ class ComplexTypeAbstract(Annotated):
             "namespace": "http://www.w3.org/2001/XMLSchema",
         },
     )
-    group: Optional["GroupRef"] = field(
+    group: None | GroupRef = field(
         default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.w3.org/2001/XMLSchema",
         },
     )
-    all: Optional["All"] = field(
+    all: None | All = field(
         default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.w3.org/2001/XMLSchema",
         },
     )
-    choice: Optional["Choice"] = field(
+    choice: None | Choice = field(
         default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.w3.org/2001/XMLSchema",
         },
     )
-    sequence: Optional["Sequence"] = field(
+    sequence: None | Sequence = field(
         default=None,
         metadata={
             "type": "Element",
@@ -1265,7 +1225,7 @@ class ComplexTypeAbstract(Annotated):
             "namespace": "http://www.w3.org/2001/XMLSchema",
         },
     )
-    any_attribute: Optional[AnyAttribute] = field(
+    any_attribute: None | AnyAttribute = field(
         default=None,
         metadata={
             "name": "anyAttribute",
@@ -1273,7 +1233,7 @@ class ComplexTypeAbstract(Annotated):
             "namespace": "http://www.w3.org/2001/XMLSchema",
         },
     )
-    name: Optional[str] = field(
+    name: None | str = field(
         default=None,
         metadata={
             "type": "Attribute",
@@ -1291,13 +1251,13 @@ class ComplexTypeAbstract(Annotated):
             "type": "Attribute",
         },
     )
-    final: Optional[DerivationSet] = field(
+    final: None | DerivationSet = field(
         default=None,
         metadata={
             "type": "Attribute",
         },
     )
-    block: Optional[DerivationSet] = field(
+    block: None | DerivationSet = field(
         default=None,
         metadata={
             "type": "Attribute",
@@ -1305,7 +1265,7 @@ class ComplexTypeAbstract(Annotated):
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class LocalComplexType(ComplexTypeAbstract):
     class Meta:
         name = "localComplexType"
@@ -1347,7 +1307,7 @@ class LocalComplexType(ComplexTypeAbstract):
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class TopLevelComplexType(ComplexTypeAbstract):
     class Meta:
         name = "topLevelComplexType"
@@ -1359,27 +1319,27 @@ class TopLevelComplexType(ComplexTypeAbstract):
             "type": "Ignore",
         },
     )
-    name: Optional[str] = field(
-        default=None,
+    name: str = field(
         metadata={
             "type": "Attribute",
-            "required": True,
-        },
+        }
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class ComplexType(TopLevelComplexType):
     class Meta:
         name = "complexType"
         namespace = "http://www.w3.org/2001/XMLSchema"
 
 
-@dataclass
+@dataclass(kw_only=True)
 class ElementAbstract(Annotated):
-    """The element element can be used either at the top level to define an
-    element-type binding globally, or within a content model to either reference a
-    globally-defined element or type or declare an element-type binding locally.
+    """
+    The element element can be used either at the top level to define an
+    element-type binding globally, or within a content model to either
+    reference a globally-defined element or type or declare an element-type
+    binding locally.
 
     The ref form is not allowed at the top level.
     """
@@ -1387,7 +1347,7 @@ class ElementAbstract(Annotated):
     class Meta:
         name = "element"
 
-    simple_type: Optional[LocalSimpleType] = field(
+    simple_type: None | LocalSimpleType = field(
         default=None,
         metadata={
             "name": "simpleType",
@@ -1395,7 +1355,7 @@ class ElementAbstract(Annotated):
             "namespace": "http://www.w3.org/2001/XMLSchema",
         },
     )
-    complex_type: Optional[LocalComplexType] = field(
+    complex_type: None | LocalComplexType = field(
         default=None,
         metadata={
             "name": "complexType",
@@ -1424,26 +1384,26 @@ class ElementAbstract(Annotated):
             "namespace": "http://www.w3.org/2001/XMLSchema",
         },
     )
-    name: Optional[str] = field(
+    name: None | str = field(
         default=None,
         metadata={
             "type": "Attribute",
         },
     )
-    ref: Optional[QName] = field(
+    ref: None | QName = field(
         default=None,
         metadata={
             "type": "Attribute",
         },
     )
-    type_value: Optional[QName] = field(
+    type_value: None | QName = field(
         default=None,
         metadata={
             "name": "type",
             "type": "Attribute",
         },
     )
-    substitution_group: Optional[QName] = field(
+    substitution_group: None | QName = field(
         default=None,
         metadata={
             "name": "substitutionGroup",
@@ -1457,20 +1417,20 @@ class ElementAbstract(Annotated):
             "type": "Attribute",
         },
     )
-    max_occurs: Union[int, AllNniValue] = field(
+    max_occurs: int | AllNniValue = field(
         default=1,
         metadata={
             "name": "maxOccurs",
             "type": "Attribute",
         },
     )
-    default: Optional[str] = field(
+    default: None | str = field(
         default=None,
         metadata={
             "type": "Attribute",
         },
     )
-    fixed: Optional[str] = field(
+    fixed: None | str = field(
         default=None,
         metadata={
             "type": "Attribute",
@@ -1488,19 +1448,19 @@ class ElementAbstract(Annotated):
             "type": "Attribute",
         },
     )
-    final: Optional[DerivationSet] = field(
+    final: None | DerivationSet = field(
         default=None,
         metadata={
             "type": "Attribute",
         },
     )
-    block: Optional[BlockSet] = field(
+    block: None | BlockSet = field(
         default=None,
         metadata={
             "type": "Attribute",
         },
     )
-    form: Optional[FormChoice] = field(
+    form: None | FormChoice = field(
         default=None,
         metadata={
             "type": "Attribute",
@@ -1508,7 +1468,7 @@ class ElementAbstract(Annotated):
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class LocalElement(ElementAbstract):
     class Meta:
         name = "localElement"
@@ -1543,7 +1503,7 @@ class LocalElement(ElementAbstract):
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class TopLevelElement(ElementAbstract):
     class Meta:
         name = "topLevelElement"
@@ -1583,26 +1543,25 @@ class TopLevelElement(ElementAbstract):
             "type": "Ignore",
         },
     )
-    name: Optional[str] = field(
-        default=None,
+    name: str = field(
         metadata={
             "type": "Attribute",
-            "required": True,
-        },
+        }
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class Element(TopLevelElement):
     class Meta:
         name = "element"
         namespace = "http://www.w3.org/2001/XMLSchema"
 
 
-@dataclass
+@dataclass(kw_only=True)
 class GroupAbstract(Annotated):
     """
-    Group type for explicit groups, named top-level groups and group references.
+    group type for explicit groups, named top-level groups and group
+    references.
     """
 
     class Meta:
@@ -1615,28 +1574,28 @@ class GroupAbstract(Annotated):
             "namespace": "http://www.w3.org/2001/XMLSchema",
         },
     )
-    group: list["GroupRef"] = field(
+    group: list[GroupRef] = field(
         default_factory=list,
         metadata={
             "type": "Element",
             "namespace": "http://www.w3.org/2001/XMLSchema",
         },
     )
-    all: list["All"] = field(
+    all: list[All] = field(
         default_factory=list,
         metadata={
             "type": "Element",
             "namespace": "http://www.w3.org/2001/XMLSchema",
         },
     )
-    choice: list["Choice"] = field(
+    choice: list[Choice] = field(
         default_factory=list,
         metadata={
             "type": "Element",
             "namespace": "http://www.w3.org/2001/XMLSchema",
         },
     )
-    sequence: list["Sequence"] = field(
+    sequence: list[Sequence] = field(
         default_factory=list,
         metadata={
             "type": "Element",
@@ -1650,13 +1609,13 @@ class GroupAbstract(Annotated):
             "namespace": "http://www.w3.org/2001/XMLSchema",
         },
     )
-    name: Optional[str] = field(
+    name: None | str = field(
         default=None,
         metadata={
             "type": "Attribute",
         },
     )
-    ref: Optional[QName] = field(
+    ref: None | QName = field(
         default=None,
         metadata={
             "type": "Attribute",
@@ -1669,7 +1628,7 @@ class GroupAbstract(Annotated):
             "type": "Attribute",
         },
     )
-    max_occurs: Union[int, AllNniValue] = field(
+    max_occurs: int | AllNniValue = field(
         default=1,
         metadata={
             "name": "maxOccurs",
@@ -1678,10 +1637,10 @@ class GroupAbstract(Annotated):
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class NarrowMaxMin(LocalElement):
     """
-    Restricted max/min.
+    restricted max/min.
     """
 
     class Meta:
@@ -1694,26 +1653,12 @@ class NarrowMaxMin(LocalElement):
             "type": "Ignore",
         },
     )
-    min_occurs: NarrowMaxMinMinOccurs = field(
-        default=NarrowMaxMinMinOccurs.VALUE_1,
-        metadata={
-            "name": "minOccurs",
-            "type": "Attribute",
-        },
-    )
-    max_occurs: NarrowMaxMinMaxOccurs = field(
-        default=NarrowMaxMinMaxOccurs.VALUE_1,
-        metadata={
-            "name": "maxOccurs",
-            "type": "Attribute",
-        },
-    )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class ExplicitGroup(GroupAbstract):
     """
-    Group type for the three kinds of group.
+    group type for the three kinds of group.
     """
 
     class Meta:
@@ -1749,7 +1694,7 @@ class ExplicitGroup(GroupAbstract):
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class RealGroup(GroupAbstract):
     class Meta:
         name = "realGroup"
@@ -1784,7 +1729,7 @@ class RealGroup(GroupAbstract):
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class Redefine(OpenAttrs):
     class Meta:
         name = "redefine"
@@ -1823,15 +1768,13 @@ class Redefine(OpenAttrs):
             "type": "Element",
         },
     )
-    schema_location: Optional[str] = field(
-        default=None,
+    schema_location: str = field(
         metadata={
             "name": "schemaLocation",
             "type": "Attribute",
-            "required": True,
-        },
+        }
     )
-    id: Optional[str] = field(
+    id: None | str = field(
         default=None,
         metadata={
             "type": "Attribute",
@@ -1839,7 +1782,7 @@ class Redefine(OpenAttrs):
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class All(ExplicitGroup):
     """
     Only elements allowed inside.
@@ -1891,30 +1834,16 @@ class All(ExplicitGroup):
             "type": "Ignore",
         },
     )
-    min_occurs: AllMinOccurs = field(
-        default=AllMinOccurs.VALUE_1,
-        metadata={
-            "name": "minOccurs",
-            "type": "Attribute",
-        },
-    )
-    max_occurs: AllMaxOccurs = field(
-        default=AllMaxOccurs.VALUE_1,
-        metadata={
-            "name": "maxOccurs",
-            "type": "Attribute",
-        },
-    )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class Choice(ExplicitGroup):
     class Meta:
         name = "choice"
         namespace = "http://www.w3.org/2001/XMLSchema"
 
 
-@dataclass
+@dataclass(kw_only=True)
 class GroupRef(RealGroup):
     class Meta:
         name = "groupRef"
@@ -1968,12 +1897,10 @@ class GroupRef(RealGroup):
             "type": "Ignore",
         },
     )
-    ref: Optional[QName] = field(
-        default=None,
+    ref: QName = field(
         metadata={
             "type": "Attribute",
-            "required": True,
-        },
+        }
     )
     name: Any = field(
         init=False,
@@ -1984,7 +1911,68 @@ class GroupRef(RealGroup):
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
+class NamedGroup(RealGroup):
+    class Meta:
+        name = "namedGroup"
+
+    element: Any = field(
+        init=False,
+        default=None,
+        metadata={
+            "type": "Ignore",
+        },
+    )
+    group: Any = field(
+        init=False,
+        default=None,
+        metadata={
+            "type": "Ignore",
+        },
+    )
+    any: Any = field(
+        init=False,
+        default=None,
+        metadata={
+            "type": "Ignore",
+        },
+    )
+    any_element: Any = field(
+        init=False,
+        default=None,
+        metadata={
+            "type": "Ignore",
+        },
+    )
+    name: str = field(
+        metadata={
+            "type": "Attribute",
+        }
+    )
+    ref: Any = field(
+        init=False,
+        default=None,
+        metadata={
+            "type": "Ignore",
+        },
+    )
+    min_occurs: Any = field(
+        init=False,
+        default=None,
+        metadata={
+            "type": "Ignore",
+        },
+    )
+    max_occurs: Any = field(
+        init=False,
+        default=None,
+        metadata={
+            "type": "Ignore",
+        },
+    )
+
+
+@dataclass(kw_only=True)
 class Schema(OpenAttrs):
     class Meta:
         name = "schema"
@@ -2060,14 +2048,14 @@ class Schema(OpenAttrs):
             "type": "Element",
         },
     )
-    target_namespace: Optional[str] = field(
+    target_namespace: None | str = field(
         default=None,
         metadata={
             "name": "targetNamespace",
             "type": "Attribute",
         },
     )
-    version: Optional[str] = field(
+    version: None | str = field(
         default=None,
         metadata={
             "type": "Attribute",
@@ -2101,13 +2089,13 @@ class Schema(OpenAttrs):
             "type": "Attribute",
         },
     )
-    id: Optional[str] = field(
+    id: None | str = field(
         default=None,
         metadata={
             "type": "Attribute",
         },
     )
-    lang: Optional[Union[str, LangValue]] = field(
+    lang: None | str | LangValue = field(
         default=None,
         metadata={
             "type": "Attribute",
@@ -2116,14 +2104,14 @@ class Schema(OpenAttrs):
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class Sequence(ExplicitGroup):
     class Meta:
         name = "sequence"
         namespace = "http://www.w3.org/2001/XMLSchema"
 
 
-@dataclass
+@dataclass(kw_only=True)
 class SimpleExplicitGroup(ExplicitGroup):
     class Meta:
         name = "simpleExplicitGroup"
@@ -2158,33 +2146,33 @@ class SimpleExplicitGroup(ExplicitGroup):
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class ExtensionType(Annotated):
     class Meta:
         name = "extensionType"
 
-    group: Optional[GroupRef] = field(
+    group: None | GroupRef = field(
         default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.w3.org/2001/XMLSchema",
         },
     )
-    all: Optional[All] = field(
+    all: None | All = field(
         default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.w3.org/2001/XMLSchema",
         },
     )
-    choice: Optional[Choice] = field(
+    choice: None | Choice = field(
         default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.w3.org/2001/XMLSchema",
         },
     )
-    sequence: Optional[Sequence] = field(
+    sequence: None | Sequence = field(
         default=None,
         metadata={
             "type": "Element",
@@ -2206,7 +2194,7 @@ class ExtensionType(Annotated):
             "namespace": "http://www.w3.org/2001/XMLSchema",
         },
     )
-    any_attribute: Optional[AnyAttribute] = field(
+    any_attribute: None | AnyAttribute = field(
         default=None,
         metadata={
             "name": "anyAttribute",
@@ -2214,192 +2202,54 @@ class ExtensionType(Annotated):
             "namespace": "http://www.w3.org/2001/XMLSchema",
         },
     )
-    base: Optional[QName] = field(
-        default=None,
+    base: QName = field(
         metadata={
             "type": "Attribute",
-            "required": True,
-        },
+        }
     )
 
 
-@dataclass
-class NamedGroup(RealGroup):
+@dataclass(kw_only=True)
+class Group(NamedGroup):
     class Meta:
-        name = "namedGroup"
-
-    element: Any = field(
-        init=False,
-        default=None,
-        metadata={
-            "type": "Ignore",
-        },
-    )
-    group: Any = field(
-        init=False,
-        default=None,
-        metadata={
-            "type": "Ignore",
-        },
-    )
-    any: Any = field(
-        init=False,
-        default=None,
-        metadata={
-            "type": "Ignore",
-        },
-    )
-    any_element: Any = field(
-        init=False,
-        default=None,
-        metadata={
-            "type": "Ignore",
-        },
-    )
-    all: list["NamedGroup.All"] = field(
-        default_factory=list,
-        metadata={
-            "type": "Element",
-            "namespace": "http://www.w3.org/2001/XMLSchema",
-        },
-    )
-    choice: list[SimpleExplicitGroup] = field(
-        default_factory=list,
-        metadata={
-            "type": "Element",
-            "namespace": "http://www.w3.org/2001/XMLSchema",
-        },
-    )
-    sequence: list[SimpleExplicitGroup] = field(
-        default_factory=list,
-        metadata={
-            "type": "Element",
-            "namespace": "http://www.w3.org/2001/XMLSchema",
-        },
-    )
-    name: Optional[str] = field(
-        default=None,
-        metadata={
-            "type": "Attribute",
-            "required": True,
-        },
-    )
-    ref: Any = field(
-        init=False,
-        default=None,
-        metadata={
-            "type": "Ignore",
-        },
-    )
-    min_occurs: Any = field(
-        init=False,
-        default=None,
-        metadata={
-            "type": "Ignore",
-        },
-    )
-    max_occurs: Any = field(
-        init=False,
-        default=None,
-        metadata={
-            "type": "Ignore",
-        },
-    )
-
-    @dataclass
-    class All(All):
-        all: Any = field(
-            init=False,
-            default=None,
-            metadata={
-                "type": "Ignore",
-            },
-        )
-        any_element: Any = field(
-            init=False,
-            default=None,
-            metadata={
-                "type": "Ignore",
-            },
-        )
-        group: Any = field(
-            init=False,
-            default=None,
-            metadata={
-                "type": "Ignore",
-            },
-        )
-        choice: Any = field(
-            init=False,
-            default=None,
-            metadata={
-                "type": "Ignore",
-            },
-        )
-        sequence: Any = field(
-            init=False,
-            default=None,
-            metadata={
-                "type": "Ignore",
-            },
-        )
-        any: Any = field(
-            init=False,
-            default=None,
-            metadata={
-                "type": "Ignore",
-            },
-        )
-        min_occurs: Any = field(
-            init=False,
-            default=None,
-            metadata={
-                "type": "Ignore",
-            },
-        )
-        max_occurs: Any = field(
-            init=False,
-            default=None,
-            metadata={
-                "type": "Ignore",
-            },
-        )
+        name = "group"
+        namespace = "http://www.w3.org/2001/XMLSchema"
 
 
-@dataclass
+@dataclass(kw_only=True)
 class RestrictionType(Annotated):
     class Meta:
         name = "restrictionType"
 
-    group: Optional[GroupRef] = field(
+    group: None | GroupRef = field(
         default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.w3.org/2001/XMLSchema",
         },
     )
-    all: Optional[All] = field(
+    all: None | All = field(
         default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.w3.org/2001/XMLSchema",
         },
     )
-    choice: Optional[Choice] = field(
+    choice: None | Choice = field(
         default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.w3.org/2001/XMLSchema",
         },
     )
-    sequence: Optional[Sequence] = field(
+    sequence: None | Sequence = field(
         default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.w3.org/2001/XMLSchema",
         },
     )
-    simple_type: Optional[LocalSimpleType] = field(
+    simple_type: None | LocalSimpleType = field(
         default=None,
         metadata={
             "name": "simpleType",
@@ -2515,7 +2365,7 @@ class RestrictionType(Annotated):
             "namespace": "http://www.w3.org/2001/XMLSchema",
         },
     )
-    any_attribute: Optional[AnyAttribute] = field(
+    any_attribute: None | AnyAttribute = field(
         default=None,
         metadata={
             "name": "anyAttribute",
@@ -2523,16 +2373,14 @@ class RestrictionType(Annotated):
             "namespace": "http://www.w3.org/2001/XMLSchema",
         },
     )
-    base: Optional[QName] = field(
-        default=None,
+    base: QName = field(
         metadata={
             "type": "Attribute",
-            "required": True,
-        },
+        }
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class ComplexRestrictionType(RestrictionType):
     class Meta:
         name = "complexRestrictionType"
@@ -2637,14 +2485,7 @@ class ComplexRestrictionType(RestrictionType):
     )
 
 
-@dataclass
-class Group(NamedGroup):
-    class Meta:
-        name = "group"
-        namespace = "http://www.w3.org/2001/XMLSchema"
-
-
-@dataclass
+@dataclass(kw_only=True)
 class SimpleExtensionType(ExtensionType):
     class Meta:
         name = "simpleExtensionType"
@@ -2686,7 +2527,7 @@ class SimpleExtensionType(ExtensionType):
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class SimpleRestrictionType(RestrictionType):
     class Meta:
         name = "simpleRestrictionType"
@@ -2728,12 +2569,9 @@ class SimpleRestrictionType(RestrictionType):
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class ComplexContent(Annotated):
     """
-
-    "
-
     :ivar restriction:
     :ivar extension:
     :ivar mixed: Overrides any setting on complexType parent.
@@ -2743,19 +2581,19 @@ class ComplexContent(Annotated):
         name = "complexContent"
         namespace = "http://www.w3.org/2001/XMLSchema"
 
-    restriction: Optional[ComplexRestrictionType] = field(
+    restriction: None | ComplexRestrictionType = field(
         default=None,
         metadata={
             "type": "Element",
         },
     )
-    extension: Optional[ExtensionType] = field(
+    extension: None | ExtensionType = field(
         default=None,
         metadata={
             "type": "Element",
         },
     )
-    mixed: Optional[bool] = field(
+    mixed: None | bool = field(
         default=None,
         metadata={
             "type": "Attribute",
@@ -2763,19 +2601,19 @@ class ComplexContent(Annotated):
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class SimpleContent(Annotated):
     class Meta:
         name = "simpleContent"
         namespace = "http://www.w3.org/2001/XMLSchema"
 
-    restriction: Optional[SimpleRestrictionType] = field(
+    restriction: None | SimpleRestrictionType = field(
         default=None,
         metadata={
             "type": "Element",
         },
     )
-    extension: Optional[SimpleExtensionType] = field(
+    extension: None | SimpleExtensionType = field(
         default=None,
         metadata={
             "type": "Element",

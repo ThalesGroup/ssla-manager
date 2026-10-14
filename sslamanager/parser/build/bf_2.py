@@ -1,5 +1,6 @@
+from __future__ import annotations
+
 from dataclasses import dataclass, field
-from typing import Optional, Union
 
 from xsdata.models.datatype import XmlDateTime
 
@@ -11,7 +12,7 @@ from sslamanager.parser.build.xml import LangValue
 __NAMESPACE__ = "http://docs.oasis-open.org/wsrf/bf-2"
 
 
-@dataclass
+@dataclass(kw_only=True)
 class BaseFaultType:
     other_element: list[object] = field(
         default_factory=list,
@@ -20,16 +21,14 @@ class BaseFaultType:
             "namespace": "##other",
         },
     )
-    timestamp: Optional[XmlDateTime] = field(
-        default=None,
+    timestamp: XmlDateTime = field(
         metadata={
             "name": "Timestamp",
             "type": "Element",
             "namespace": "http://docs.oasis-open.org/wsrf/bf-2",
-            "required": True,
-        },
+        }
     )
-    originator: Optional[EndpointReferenceType] = field(
+    originator: None | EndpointReferenceType = field(
         default=None,
         metadata={
             "name": "Originator",
@@ -37,7 +36,7 @@ class BaseFaultType:
             "namespace": "http://docs.oasis-open.org/wsrf/bf-2",
         },
     )
-    error_code: Optional["BaseFaultType.ErrorCode"] = field(
+    error_code: None | BaseFaultType.ErrorCode = field(
         default=None,
         metadata={
             "name": "ErrorCode",
@@ -45,7 +44,7 @@ class BaseFaultType:
             "namespace": "http://docs.oasis-open.org/wsrf/bf-2",
         },
     )
-    description: list["BaseFaultType.Description"] = field(
+    description: list[BaseFaultType.Description] = field(
         default_factory=list,
         metadata={
             "name": "Description",
@@ -53,7 +52,7 @@ class BaseFaultType:
             "namespace": "http://docs.oasis-open.org/wsrf/bf-2",
         },
     )
-    fault_cause: Optional["BaseFaultType.FaultCause"] = field(
+    fault_cause: None | BaseFaultType.FaultCause = field(
         default=None,
         metadata={
             "name": "FaultCause",
@@ -69,14 +68,12 @@ class BaseFaultType:
         },
     )
 
-    @dataclass
+    @dataclass(kw_only=True)
     class ErrorCode:
-        dialect: Optional[str] = field(
-            default=None,
+        dialect: str = field(
             metadata={
                 "type": "Attribute",
-                "required": True,
-            },
+            }
         )
         content: list[object] = field(
             default_factory=list,
@@ -87,15 +84,10 @@ class BaseFaultType:
             },
         )
 
-    @dataclass
+    @dataclass(kw_only=True)
     class Description:
-        value: str = field(
-            default="",
-            metadata={
-                "required": True,
-            },
-        )
-        lang: Optional[Union[str, LangValue]] = field(
+        value: str = field(default="")
+        lang: None | str | LangValue = field(
             default=None,
             metadata={
                 "type": "Attribute",
@@ -103,9 +95,9 @@ class BaseFaultType:
             },
         )
 
-    @dataclass
+    @dataclass(kw_only=True)
     class FaultCause:
-        other_element: Optional[object] = field(
+        other_element: None | object = field(
             default=None,
             metadata={
                 "type": "Wildcard",
@@ -114,7 +106,7 @@ class BaseFaultType:
         )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class BaseFault(BaseFaultType):
     class Meta:
         namespace = "http://docs.oasis-open.org/wsrf/bf-2"

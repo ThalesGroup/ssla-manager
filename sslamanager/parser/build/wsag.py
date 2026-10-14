@@ -1,6 +1,7 @@
+from __future__ import annotations
+
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Optional
 
 from xsdata.models.datatype import XmlDateTime, XmlDuration
 
@@ -30,22 +31,17 @@ from sslamanager.parser.build.pkg_2001.xmlschema import (
 __NAMESPACE__ = "http://schemas.ggf.org/graap/2007/03/ws-agreement"
 
 
-@dataclass
+@dataclass(kw_only=True)
 class AgreementId:
     class Meta:
         namespace = "http://schemas.ggf.org/graap/2007/03/ws-agreement"
 
-    value: str = field(
-        default="",
-        metadata={
-            "required": True,
-        },
-    )
+    value: str = field(default="")
 
 
-@dataclass
+@dataclass(kw_only=True)
 class AgreementInitiatorIdentifierType:
-    reference: Optional[object] = field(
+    reference: None | object = field(
         default=None,
         metadata={
             "name": "Reference",
@@ -55,9 +51,9 @@ class AgreementInitiatorIdentifierType:
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class AgreementResponderIdentifierType:
-    reference: Optional[object] = field(
+    reference: None | object = field(
         default=None,
         metadata={
             "name": "Reference",
@@ -72,20 +68,16 @@ class AgreementRoleType(Enum):
     AGREEMENT_RESPONDER = "AgreementResponder"
 
 
-@dataclass
+@dataclass(kw_only=True)
 class CompensationType:
-    assessment_interval: Optional["CompensationType.AssessmentInterval"] = (
-        field(
-            default=None,
-            metadata={
-                "name": "AssessmentInterval",
-                "type": "Element",
-                "namespace": "http://schemas.ggf.org/graap/2007/03/ws-agreement",
-                "required": True,
-            },
-        )
+    assessment_interval: CompensationType.AssessmentInterval = field(
+        metadata={
+            "name": "AssessmentInterval",
+            "type": "Element",
+            "namespace": "http://schemas.ggf.org/graap/2007/03/ws-agreement",
+        }
     )
-    value_unit: Optional[str] = field(
+    value_unit: None | str = field(
         default=None,
         metadata={
             "name": "ValueUnit",
@@ -93,7 +85,7 @@ class CompensationType:
             "namespace": "http://schemas.ggf.org/graap/2007/03/ws-agreement",
         },
     )
-    value_expression: Optional[object] = field(
+    value_expression: None | object = field(
         default=None,
         metadata={
             "name": "ValueExpression",
@@ -102,9 +94,9 @@ class CompensationType:
         },
     )
 
-    @dataclass
+    @dataclass(kw_only=True)
     class AssessmentInterval:
-        time_interval: Optional[XmlDuration] = field(
+        time_interval: None | XmlDuration = field(
             default=None,
             metadata={
                 "name": "TimeInterval",
@@ -112,7 +104,7 @@ class CompensationType:
                 "namespace": "http://schemas.ggf.org/graap/2007/03/ws-agreement",
             },
         )
-        count: Optional[int] = field(
+        count: None | int = field(
             default=None,
             metadata={
                 "name": "Count",
@@ -122,12 +114,12 @@ class CompensationType:
         )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class Constraint:
     class Meta:
         namespace = "http://schemas.ggf.org/graap/2007/03/ws-agreement"
 
-    any_element: Optional[object] = field(
+    any_element: None | object = field(
         default=None,
         metadata={
             "type": "Wildcard",
@@ -136,21 +128,19 @@ class Constraint:
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class KpitargetType:
     class Meta:
         name = "KPITargetType"
 
-    kpiname: Optional[str] = field(
-        default=None,
+    kpiname: str = field(
         metadata={
             "name": "KPIName",
             "type": "Element",
             "namespace": "http://schemas.ggf.org/graap/2007/03/ws-agreement",
-            "required": True,
-        },
+        }
     )
-    custom_service_level: Optional[object] = field(
+    custom_service_level: None | object = field(
         default=None,
         metadata={
             "name": "CustomServiceLevel",
@@ -160,35 +150,25 @@ class KpitargetType:
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class Location:
     class Meta:
         namespace = "http://schemas.ggf.org/graap/2007/03/ws-agreement"
 
-    value: str = field(
-        default="",
-        metadata={
-            "required": True,
-        },
-    )
+    value: str = field(default="")
 
 
-@dataclass
+@dataclass(kw_only=True)
 class Name:
     class Meta:
         namespace = "http://schemas.ggf.org/graap/2007/03/ws-agreement"
 
-    value: str = field(
-        default="",
-        metadata={
-            "required": True,
-        },
-    )
+    value: str = field(default="")
 
 
-@dataclass
+@dataclass(kw_only=True)
 class NoncriticalExtensionType:
-    other_element: Optional[object] = field(
+    other_element: None | object = field(
         default=None,
         metadata={
             "type": "Wildcard",
@@ -197,7 +177,7 @@ class NoncriticalExtensionType:
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class PreferenceType:
     service_term_reference: list[str] = field(
         default_factory=list,
@@ -221,12 +201,12 @@ class PreferenceType:
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class QualifyingCondition:
     class Meta:
         namespace = "http://schemas.ggf.org/graap/2007/03/ws-agreement"
 
-    any_element: Optional[object] = field(
+    any_element: None | object = field(
         default=None,
         metadata={
             "type": "Wildcard",
@@ -235,7 +215,7 @@ class QualifyingCondition:
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class ServiceNameSet:
     service_name: list[str] = field(
         default_factory=list,
@@ -252,7 +232,7 @@ class ServiceRoleType(Enum):
     SERVICE_PROVIDER = "ServiceProvider"
 
 
-@dataclass
+@dataclass(kw_only=True)
 class ServiceSelectorType:
     other_element: list[object] = field(
         default_factory=list,
@@ -261,7 +241,7 @@ class ServiceSelectorType:
             "namespace": "##other",
         },
     )
-    service_name: Optional[str] = field(
+    service_name: None | str = field(
         default=None,
         metadata={
             "name": "ServiceName",
@@ -271,22 +251,20 @@ class ServiceSelectorType:
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class TermType:
-    name: Optional[str] = field(
-        default=None,
+    name: str = field(
         metadata={
             "name": "Name",
             "type": "Attribute",
             "namespace": "http://schemas.ggf.org/graap/2007/03/ws-agreement",
-            "required": True,
-        },
+        }
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class AgreementContextType:
-    agreement_initiator: Optional[object] = field(
+    agreement_initiator: None | object = field(
         default=None,
         metadata={
             "name": "AgreementInitiator",
@@ -294,7 +272,7 @@ class AgreementContextType:
             "namespace": "http://schemas.ggf.org/graap/2007/03/ws-agreement",
         },
     )
-    agreement_responder: Optional[object] = field(
+    agreement_responder: None | object = field(
         default=None,
         metadata={
             "name": "AgreementResponder",
@@ -302,16 +280,14 @@ class AgreementContextType:
             "namespace": "http://schemas.ggf.org/graap/2007/03/ws-agreement",
         },
     )
-    service_provider: Optional[AgreementRoleType] = field(
-        default=None,
+    service_provider: AgreementRoleType = field(
         metadata={
             "name": "ServiceProvider",
             "type": "Element",
             "namespace": "http://schemas.ggf.org/graap/2007/03/ws-agreement",
-            "required": True,
-        },
+        }
     )
-    expiration_time: Optional[XmlDateTime] = field(
+    expiration_time: None | XmlDateTime = field(
         default=None,
         metadata={
             "name": "ExpirationTime",
@@ -319,7 +295,7 @@ class AgreementContextType:
             "namespace": "http://schemas.ggf.org/graap/2007/03/ws-agreement",
         },
     )
-    template_id: Optional[str] = field(
+    template_id: None | str = field(
         default=None,
         metadata={
             "name": "TemplateId",
@@ -327,7 +303,7 @@ class AgreementContextType:
             "namespace": "http://schemas.ggf.org/graap/2007/03/ws-agreement",
         },
     )
-    template_name: Optional[str] = field(
+    template_name: None | str = field(
         default=None,
         metadata={
             "name": "TemplateName",
@@ -351,9 +327,9 @@ class AgreementContextType:
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class BusinessValueListType:
-    importance: Optional[int] = field(
+    importance: None | int = field(
         default=None,
         metadata={
             "name": "Importance",
@@ -377,7 +353,7 @@ class BusinessValueListType:
             "namespace": "http://schemas.ggf.org/graap/2007/03/ws-agreement",
         },
     )
-    preference: Optional[PreferenceType] = field(
+    preference: None | PreferenceType = field(
         default=None,
         metadata={
             "name": "Preference",
@@ -395,36 +371,32 @@ class BusinessValueListType:
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class ContinuingFaultType(BaseFaultType):
     pass
 
 
-@dataclass
+@dataclass(kw_only=True)
 class NoncriticalExtensions(NoncriticalExtensionType):
     class Meta:
         namespace = "http://schemas.ggf.org/graap/2007/03/ws-agreement"
 
 
-@dataclass
+@dataclass(kw_only=True)
 class OfferItemType:
-    location: Optional[Location] = field(
-        default=None,
+    location: Location = field(
         metadata={
             "name": "Location",
             "type": "Element",
             "namespace": "http://schemas.ggf.org/graap/2007/03/ws-agreement",
-            "required": True,
-        },
+        }
     )
-    item_constraint: Optional["OfferItemType.ItemConstraint"] = field(
-        default=None,
+    item_constraint: OfferItemType.ItemConstraint = field(
         metadata={
             "name": "ItemConstraint",
             "type": "Element",
             "namespace": "http://schemas.ggf.org/graap/2007/03/ws-agreement",
-            "required": True,
-        },
+        }
     )
     any_element: list[object] = field(
         default_factory=list,
@@ -433,7 +405,7 @@ class OfferItemType:
             "namespace": "##any",
         },
     )
-    name: Optional[str] = field(
+    name: None | str = field(
         default=None,
         metadata={
             "name": "Name",
@@ -442,9 +414,9 @@ class OfferItemType:
         },
     )
 
-    @dataclass
+    @dataclass(kw_only=True)
     class ItemConstraint:
-        simple_type: Optional[LocalSimpleType] = field(
+        simple_type: None | LocalSimpleType = field(
             default=None,
             metadata={
                 "name": "simpleType",
@@ -545,28 +517,28 @@ class OfferItemType:
                 "namespace": "http://www.w3.org/2001/XMLSchema",
             },
         )
-        group: Optional[GroupRef] = field(
+        group: None | GroupRef = field(
             default=None,
             metadata={
                 "type": "Element",
                 "namespace": "http://www.w3.org/2001/XMLSchema",
             },
         )
-        all: Optional[XmlschemaAll] = field(
+        all: None | XmlschemaAll = field(
             default=None,
             metadata={
                 "type": "Element",
                 "namespace": "http://www.w3.org/2001/XMLSchema",
             },
         )
-        choice: Optional[Choice] = field(
+        choice: None | Choice = field(
             default=None,
             metadata={
                 "type": "Element",
                 "namespace": "http://www.w3.org/2001/XMLSchema",
             },
         )
-        sequence: Optional[Sequence] = field(
+        sequence: None | Sequence = field(
             default=None,
             metadata={
                 "type": "Element",
@@ -575,9 +547,9 @@ class OfferItemType:
         )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class ServiceLevelObjectiveType:
-    kpitarget: Optional[KpitargetType] = field(
+    kpitarget: None | KpitargetType = field(
         default=None,
         metadata={
             "name": "KPITarget",
@@ -585,7 +557,7 @@ class ServiceLevelObjectiveType:
             "namespace": "http://schemas.ggf.org/graap/2007/03/ws-agreement",
         },
     )
-    custom_service_level: Optional[object] = field(
+    custom_service_level: None | object = field(
         default=None,
         metadata={
             "name": "CustomServiceLevel",
@@ -595,31 +567,27 @@ class ServiceLevelObjectiveType:
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class ServiceTermType(TermType):
-    service_name: Optional[str] = field(
-        default=None,
+    service_name: str = field(
         metadata={
             "name": "ServiceName",
             "type": "Attribute",
             "namespace": "http://schemas.ggf.org/graap/2007/03/ws-agreement",
-            "required": True,
-        },
+        }
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class VariableType:
-    location: Optional[Location] = field(
-        default=None,
+    location: Location = field(
         metadata={
             "name": "Location",
             "type": "Element",
             "namespace": "http://schemas.ggf.org/graap/2007/03/ws-agreement",
-            "required": True,
-        },
+        }
     )
-    name: Optional[str] = field(
+    name: None | str = field(
         default=None,
         metadata={
             "name": "Name",
@@ -627,7 +595,7 @@ class VariableType:
             "namespace": "http://schemas.ggf.org/graap/2007/03/ws-agreement",
         },
     )
-    metric: Optional[str] = field(
+    metric: None | str = field(
         default=None,
         metadata={
             "name": "Metric",
@@ -637,7 +605,7 @@ class VariableType:
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class ConstraintSectionType:
     item: list[OfferItemType] = field(
         default_factory=list,
@@ -657,21 +625,21 @@ class ConstraintSectionType:
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class Context(AgreementContextType):
     class Meta:
         namespace = "http://schemas.ggf.org/graap/2007/03/ws-agreement"
 
 
-@dataclass
+@dataclass(kw_only=True)
 class ContinuingFault(ContinuingFaultType):
     class Meta:
         namespace = "http://schemas.ggf.org/graap/2007/03/ws-agreement"
 
 
-@dataclass
+@dataclass(kw_only=True)
 class ServiceDescriptionTermType(ServiceTermType):
-    other_element: Optional[object] = field(
+    other_element: None | object = field(
         default=None,
         metadata={
             "type": "Wildcard",
@@ -680,15 +648,15 @@ class ServiceDescriptionTermType(ServiceTermType):
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class ServiceLevelObjective(ServiceLevelObjectiveType):
     class Meta:
         namespace = "http://schemas.ggf.org/graap/2007/03/ws-agreement"
 
 
-@dataclass
+@dataclass(kw_only=True)
 class ServiceReferenceType(ServiceTermType):
-    other_element: Optional[object] = field(
+    other_element: None | object = field(
         default=None,
         metadata={
             "type": "Wildcard",
@@ -697,7 +665,7 @@ class ServiceReferenceType(ServiceTermType):
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class VariableSetType:
     variable: list[VariableType] = field(
         default_factory=list,
@@ -710,7 +678,7 @@ class VariableSetType:
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class GuaranteeTermType(TermType):
     service_scope: list[ServiceSelectorType] = field(
         default_factory=list,
@@ -720,7 +688,7 @@ class GuaranteeTermType(TermType):
             "namespace": "http://schemas.ggf.org/graap/2007/03/ws-agreement",
         },
     )
-    qualifying_condition: Optional[QualifyingCondition] = field(
+    qualifying_condition: None | QualifyingCondition = field(
         default=None,
         metadata={
             "name": "QualifyingCondition",
@@ -728,25 +696,21 @@ class GuaranteeTermType(TermType):
             "namespace": "http://schemas.ggf.org/graap/2007/03/ws-agreement",
         },
     )
-    service_level_objective: Optional[ServiceLevelObjective] = field(
-        default=None,
+    service_level_objective: ServiceLevelObjective = field(
         metadata={
             "name": "ServiceLevelObjective",
             "type": "Element",
             "namespace": "http://schemas.ggf.org/graap/2007/03/ws-agreement",
-            "required": True,
-        },
+        }
     )
-    business_value_list: Optional[BusinessValueListType] = field(
-        default=None,
+    business_value_list: BusinessValueListType = field(
         metadata={
             "name": "BusinessValueList",
             "type": "Element",
             "namespace": "http://schemas.ggf.org/graap/2007/03/ws-agreement",
-            "required": True,
-        },
+        }
     )
-    obligated: Optional[ServiceRoleType] = field(
+    obligated: None | ServiceRoleType = field(
         default=None,
         metadata={
             "name": "Obligated",
@@ -756,22 +720,20 @@ class GuaranteeTermType(TermType):
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class ServicePropertiesType(ServiceTermType):
-    variable_set: Optional[VariableSetType] = field(
-        default=None,
+    variable_set: VariableSetType = field(
         metadata={
             "name": "VariableSet",
             "type": "Element",
             "namespace": "http://schemas.ggf.org/graap/2007/03/ws-agreement",
-            "required": True,
-        },
+        }
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class TermCompositorType:
-    exactly_one: list["TermCompositorType"] = field(
+    exactly_one: list[TermCompositorType] = field(
         default_factory=list,
         metadata={
             "name": "ExactlyOne",
@@ -779,7 +741,7 @@ class TermCompositorType:
             "namespace": "http://schemas.ggf.org/graap/2007/03/ws-agreement",
         },
     )
-    one_or_more: list["TermCompositorType"] = field(
+    one_or_more: list[TermCompositorType] = field(
         default_factory=list,
         metadata={
             "name": "OneOrMore",
@@ -787,7 +749,7 @@ class TermCompositorType:
             "namespace": "http://schemas.ggf.org/graap/2007/03/ws-agreement",
         },
     )
-    all: list["All"] = field(
+    all: list[All] = field(
         default_factory=list,
         metadata={
             "name": "All",
@@ -829,15 +791,15 @@ class TermCompositorType:
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class All(TermCompositorType):
     class Meta:
         namespace = "http://schemas.ggf.org/graap/2007/03/ws-agreement"
 
 
-@dataclass
+@dataclass(kw_only=True)
 class TermTreeType:
-    all: Optional[All] = field(
+    all: None | All = field(
         default=None,
         metadata={
             "name": "All",
@@ -847,15 +809,15 @@ class TermTreeType:
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class Terms(TermTreeType):
     class Meta:
         namespace = "http://schemas.ggf.org/graap/2007/03/ws-agreement"
 
 
-@dataclass
+@dataclass(kw_only=True)
 class AgreementType:
-    name: Optional[Name] = field(
+    name: None | Name = field(
         default=None,
         metadata={
             "name": "Name",
@@ -863,25 +825,21 @@ class AgreementType:
             "namespace": "http://schemas.ggf.org/graap/2007/03/ws-agreement",
         },
     )
-    context: Optional[Context] = field(
-        default=None,
+    context: Context = field(
         metadata={
             "name": "Context",
             "type": "Element",
             "namespace": "http://schemas.ggf.org/graap/2007/03/ws-agreement",
-            "required": True,
-        },
+        }
     )
-    terms: Optional[Terms] = field(
-        default=None,
+    terms: Terms = field(
         metadata={
             "name": "Terms",
             "type": "Element",
             "namespace": "http://schemas.ggf.org/graap/2007/03/ws-agreement",
-            "required": True,
-        },
+        }
     )
-    agreement_id: Optional[str] = field(
+    agreement_id: None | str = field(
         default=None,
         metadata={
             "name": "AgreementId",
@@ -891,24 +849,22 @@ class AgreementType:
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class AgreementOffer(AgreementType):
     class Meta:
         namespace = "http://schemas.ggf.org/graap/2007/03/ws-agreement"
 
 
-@dataclass
+@dataclass(kw_only=True)
 class AgreementTemplateType(AgreementType):
-    creation_constraints: Optional[ConstraintSectionType] = field(
-        default=None,
+    creation_constraints: ConstraintSectionType = field(
         metadata={
             "name": "CreationConstraints",
             "type": "Element",
             "namespace": "http://schemas.ggf.org/graap/2007/03/ws-agreement",
-            "required": True,
-        },
+        }
     )
-    template_id: Optional[str] = field(
+    template_id: None | str = field(
         default=None,
         metadata={
             "name": "TemplateId",
@@ -918,7 +874,7 @@ class AgreementTemplateType(AgreementType):
     )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class Template(AgreementTemplateType):
     class Meta:
         namespace = "http://schemas.ggf.org/graap/2007/03/ws-agreement"

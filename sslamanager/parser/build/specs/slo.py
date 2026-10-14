@@ -1,6 +1,7 @@
+from __future__ import annotations
+
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Optional
 
 __NAMESPACE__ = "http://www.specs-project.eu/resources/schemas/xml/SLAtemplate"
 
@@ -24,12 +25,12 @@ class TwoOpOperator(Enum):
     IN_INCLUDED = "in_included"
 
 
-@dataclass
+@dataclass(kw_only=True)
 class SloexpressionType:
     class Meta:
         name = "SLOexpressionType"
 
-    one_op_expression: Optional["SloexpressionType.OneOpExpression"] = field(
+    one_op_expression: None | SloexpressionType.OneOpExpression = field(
         default=None,
         metadata={
             "name": "oneOpExpression",
@@ -37,7 +38,7 @@ class SloexpressionType:
             "namespace": "http://www.specs-project.eu/resources/schemas/xml/SLAtemplate",
         },
     )
-    two_op_expression: Optional["SloexpressionType.TwoOpExpression"] = field(
+    two_op_expression: None | SloexpressionType.TwoOpExpression = field(
         default=None,
         metadata={
             "name": "twoOpExpression",
@@ -46,17 +47,15 @@ class SloexpressionType:
         },
     )
 
-    @dataclass
+    @dataclass(kw_only=True)
     class OneOpExpression:
-        operator: Optional[OneOpOperator] = field(
-            default=None,
+        operator: OneOpOperator = field(
             metadata={
                 "type": "Element",
                 "namespace": "http://www.specs-project.eu/resources/schemas/xml/SLAtemplate",
-                "required": True,
-            },
+            }
         )
-        operand: Optional[object] = field(
+        operand: None | object = field(
             default=None,
             metadata={
                 "type": "Element",
@@ -64,24 +63,22 @@ class SloexpressionType:
             },
         )
 
-    @dataclass
+    @dataclass(kw_only=True)
     class TwoOpExpression:
-        operator: Optional[TwoOpOperator] = field(
+        operator: TwoOpOperator = field(
+            metadata={
+                "type": "Element",
+                "namespace": "http://www.specs-project.eu/resources/schemas/xml/SLAtemplate",
+            }
+        )
+        operand1: None | object = field(
             default=None,
             metadata={
                 "type": "Element",
                 "namespace": "http://www.specs-project.eu/resources/schemas/xml/SLAtemplate",
-                "required": True,
             },
         )
-        operand1: Optional[object] = field(
-            default=None,
-            metadata={
-                "type": "Element",
-                "namespace": "http://www.specs-project.eu/resources/schemas/xml/SLAtemplate",
-            },
-        )
-        operand2: Optional[object] = field(
+        operand2: None | object = field(
             default=None,
             metadata={
                 "type": "Element",
@@ -90,42 +87,34 @@ class SloexpressionType:
         )
 
 
-@dataclass
+@dataclass(kw_only=True)
 class Slotype:
     class Meta:
         name = "SLOType"
 
-    metric_ref: Optional[str] = field(
-        default=None,
+    metric_ref: str = field(
         metadata={
             "name": "MetricREF",
             "type": "Element",
             "namespace": "http://www.specs-project.eu/resources/schemas/xml/SLAtemplate",
-            "required": True,
-        },
+        }
     )
-    sloexpression: Optional[SloexpressionType] = field(
-        default=None,
+    sloexpression: SloexpressionType = field(
         metadata={
             "name": "SLOexpression",
             "type": "Element",
             "namespace": "http://www.specs-project.eu/resources/schemas/xml/SLAtemplate",
-            "required": True,
-        },
+        }
     )
-    importance_weight: Optional[SlotypeImportanceWeight] = field(
-        default=None,
+    importance_weight: SlotypeImportanceWeight = field(
         metadata={
             "type": "Element",
             "namespace": "http://www.specs-project.eu/resources/schemas/xml/SLAtemplate",
-            "required": True,
-        },
+        }
     )
-    slo_id: Optional[str] = field(
-        default=None,
+    slo_id: str = field(
         metadata={
             "name": "SLO_ID",
             "type": "Attribute",
-            "required": True,
-        },
+        }
     )
